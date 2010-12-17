@@ -1,0 +1,12 @@
+# IMPORTANT!!!
+
+Before this plugin or menu item will work correctly with e107 you will need to rename the directory you're presented with to `wowapp`. In most cases this can be done
+inside the archive program you use to decompress the tar/zipball.
+
+# WoW Guild Application
+
+Allow users of your site to apply for your World of Warcraft guild.
+
+## THIS IS A WORK IN PROGRESS
+
+This plugin is currently in brainstorm stage. Please direct your ideas and comments to [this thread](http://e107.org/e107_plugins/forum/forum_viewtopic.php?211599).
