@@ -1,7 +1,11 @@
-# IMPORTANT!!!
+# Alpha/Beta Testing
 
-Before this plugin or menu item will work correctly with e107 you will need to rename the directory you're presented with to `wowapp`. In most cases this can be done
-inside the archive program you use to decompress the tar/zipball.
+The Alpha and Beta tests will be open to the public, however they will require you to be familiar with downloading the files directly from the repo instead of getting
+a zip file from the downloads section. It's not hard at all, but support related to improperly installing the plugin because you cannot follow the the below instructions
+will not be provided.
+
+Once you've downloaded the files from the repo (click Downloads and then either the .tar.gz or the .zip buttons) you need to rename the directory that is inside the zipball/tarball
+to `wowapp` before placing it inside your `e107_plugins` directory. Failure to do this will result in the plugin not being recognized by the Plugin Manager.
 
 # WoW Guild Application
 
@@ -19,7 +23,7 @@ completed I'll be tagging a BETA release and posting about it on [e107.org](http
 
 ## Phase 1 (aka ALPHA.1)
 
-This phase will be used to test the Application Creation code.
+This phase will be used to test the Application Creation/Submittal code.
 
 ## Phase 2 (aka ALPHA.2)
 
