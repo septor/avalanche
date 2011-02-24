@@ -4,7 +4,7 @@
 
 $eplug_name        = "WoW Guild Application";
 $eplug_version     = "ALPHA.1";
-$eplug_author      = "septor";
+$eplug_author      = "Patrick Weaver";
 $eplug_url         = "http://painswitch.com/";
 $eplug_email       = "patrickweaver@gmail.com";
 $eplug_description = "World of Warcraft Guild Application";
@@ -65,7 +65,7 @@ $eplug_tables = array(
 	"CREATE TABLE ".MPREFIX."wowapp_request (
 		wa_id int(10) unsigned NOT NULL auto_increment,
 		wa_uid int(10) unsigned NOT NULL,
-		wa_qid varchar(250) NOT NULL,
+		wa_qid int(10) unsigned NOT NULL,
 		wa_value text NOT NULL,
 		PRIMARY KEY  (wa_id)
 	) TYPE=MyISAM AUTO_INCREMENT=1;",
@@ -100,7 +100,7 @@ $eplug_done = $eplug_name." has been sucessfully installed!";
 
 //SAME AS ABOVE BUT ONLY RUN WHEN CHOOSING UPGRADE---------------------------------------------------------+
 
-$upgrade_add_prefs    = $eplug_prefs;
+$upgrade_add_prefs    = "";
 $upgrade_remove_prefs = "";
 $upgrade_alter_tables = "";
 $eplug_upgrade_done   = "";

@@ -3,21 +3,21 @@
 if(!defined("e107_INIT")) {
 	require_once("../../class2.php");
 }
+require_once(e_HANDLER."userclass_class.php");
 if(!getperms("P")){ header("location:".e_BASE."index.php"); exit;}
 require_once(e_ADMIN."auth.php");
-require_once(e_HANDLER."userclass_class.php");
 
 	
 if(isset($_POST['updatesettings'])){
-	$pref['wowapp_guildname'] = $_POST['wowapp_guildname'];
-	$pref['wowapp_rules'] = $_POST['wowapp_rules'];
-	$pref['wowapp_rulesrequired'] = $_POST['wowapp_rulesrequired'];
+	$pref['wowapp_guildname'] = $tp->toDB($_POST['wowapp_guildname']);
+	$pref['wowapp_rules'] = $tp->toDB($_POST['wowapp_rules']);
+	$pref['wowapp_rulesrequired'] = $tp->toDB($_POST['wowapp_rulesrequired']);
 	$pref['wowapp_viewclass'] = $_POST['wowapp_viewclass'];
 	$pref['wowapp_rankclass'] = $_POST['wowapp_rankclass'];
 	$pref['wowapp_manageclass'] = $_POST['wowapp_manageclass'];
-	$pref['wowapp_replymethod'] = $_POST['wowapp_replymethod'];
-	$pref['wowapp_externalallowed'] = $_POST['wowapp_externalallowed'];
-	$pref['wowapp_wowrecruitlink'] = $_POST['wowapp_wowrecruit'];
+	$pref['wowapp_replymethod'] = $tp->toDB($_POST['wowapp_replymethod']);
+	$pref['wowapp_externalallowed'] = $tp->toDB($_POST['wowapp_externalallowed']);
+	$pref['wowapp_wowrecruitlink'] = $tp->toDB($_POST['wowapp_wowrecruit']);
 	save_prefs();
 	$message = "Settings saved successfully!";
 }

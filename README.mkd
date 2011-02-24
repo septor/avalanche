@@ -11,17 +11,15 @@ to `wowapp` before placing it inside your `e107_plugins` directory. Failure to d
 
 Allow users of your site to apply for your World of Warcraft guild.
 
-## THIS IS A WORK IN PROGRESS
-
-This plugin is currently in brainstorm stage. Please direct your ideas and comments to [this thread](http://e107.org/e107_plugins/forum/forum_viewtopic.php?211599).
-
 # Alpha Phase Release Plan
 
 Instead of getting everything done at once I plan on pushing this plugin live in the stages outlined below. If you're interested in testing this plugin you are urged to reinstall
 (unless otherwise instructed) the plugin after each alpha phase is tagged. The alpha phases will only be announced on [my website](http://painswitch.com/). Once all four phases are
 completed I'll be tagging a BETA release and posting about it on [e107.org](http://e107.org/).
 
-## Phase 1 (aka ALPHA.1)
+## Phase 1 (aka ALPHA.1) *IN PROGRESS*
+
+**PHASE ONE IS IN PROGRESS**
 
 This phase will be used to test the Application Creation/Submittal code.
 
@@ -36,3 +34,10 @@ This phase will be used to test the Armory Gathering code.
 ## Phase 4 (aka ALPHA.4)
 
 This phase will be used to test the Application Review/Vote System.
+
+# Known Issues
+
+The following issues are known and have first priority to getting fixed:
+
+* Userclass preferences aren't getting saved.
+* If the checkbox type is selected, the answers do not get saved correctly. As a result they also do not get displayed on `results.php`.
