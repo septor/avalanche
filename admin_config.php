@@ -12,9 +12,9 @@ if(isset($_POST['updatesettings'])){
 	$pref['wowapp_guildname'] = $tp->toDB($_POST['wowapp_guildname']);
 	$pref['wowapp_rules'] = $tp->toDB($_POST['wowapp_rules']);
 	$pref['wowapp_rulesrequired'] = $tp->toDB($_POST['wowapp_rulesrequired']);
-	$pref['wowapp_viewclass'] = $_POST['wowapp_viewclass'];
-	$pref['wowapp_rankclass'] = $_POST['wowapp_rankclass'];
-	$pref['wowapp_manageclass'] = $_POST['wowapp_manageclass'];
+	$pref['wowapp_viewaccess'] = $_POST['wowapp_viewaccess'];
+	$pref['wowapp_rankaccess'] = $_POST['wowapp_rankaccess'];
+	$pref['wowapp_manageaccess'] = $_POST['wowapp_manageaccess'];
 	$pref['wowapp_replymethod'] = $tp->toDB($_POST['wowapp_replymethod']);
 	$pref['wowapp_externalallowed'] = $tp->toDB($_POST['wowapp_externalallowed']);
 	$pref['wowapp_wowrecruitlink'] = $tp->toDB($_POST['wowapp_wowrecruit']);

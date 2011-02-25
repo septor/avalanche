@@ -39,5 +39,4 @@ This phase will be used to test the Application Review/Vote System.
 
 The following issues are known and have first priority to getting fixed:
 
-* Userclass preferences aren't getting saved.
 * If the checkbox type is selected, the answers do not get saved correctly. As a result they also do not get displayed on `results.php`.
