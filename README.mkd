@@ -7,13 +7,9 @@ will not be provided.
 Once you've downloaded the files from the repo (click Downloads and then either the .tar.gz or the .zip buttons) you need to rename the directory that is inside the zipball/tarball
 to `wowapp` before placing it inside your `e107_plugins` directory. Failure to do this will result in the plugin not being recognized by the Plugin Manager.
 
-# WoW Guild Application
+# Upcoming Features
 
-Allow users of your site to apply for your World of Warcraft guild. *This section will be expanded on as features get added.*
-
-# Alpha Phase Release Plan
-
-.. is no longer valid. The following features will be getting worked on and will be committed as they are ready, instead of in phases:
+The application creations still lacks the ability to edit and remove questions. This is the next thing that will get worked on.
 
 * Armory Information Setup
 * Armory Gathering
