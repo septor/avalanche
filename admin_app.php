@@ -178,7 +178,7 @@ if($sql->db_Count("wowapp_application", "(*)") == 0){
 
 $text2 .= "</div>";
 
-$ns->tablerender("Configure WoW Guild Applcation: Created Fields", $text2);
+$ns->tablerender("Configure WoW Guild Application: Created Fields", $text2);
 
 require_once(e_ADMIN."footer.php");
 
