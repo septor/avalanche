@@ -33,9 +33,12 @@ while($row = $sql->db_Fetch()){
 		$answer = $values[$row['wa_value']];
 
 	}else if($type == "checkbox"){
-		//$values = explode(",", $values);
+		$values = explode(",", $values);
 		$checked = explode(",", $row['wa_value']);
-		$answer = $checked[0];
+		$answer = $values[$checked[0]];
+		for($i = 1; $i <= (count($checked)-2); $i++){
+			$answer .= ", ".$values[$checked[$i]];
+		}
 
 	}else{
 		$answer = $row['wa_value'];

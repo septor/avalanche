@@ -7,20 +7,20 @@ $sql3 = new db();
 if(isset($_POST['apply'])){
 	$fields = array();
 	$types = array();
-	$sql2->db_Select("wowapp_application", "*");
-	while($row2 = $sql2->db_Fetch()){
-		array_push($fields, $row2['wa_fieldname']);
-		array_push($types, $row2['wa_type']);
+	$sql->db_Select("wowapp_application", "*");
+	while($row = $sql->db_Fetch()){
+		array_push($fields, $row['wa_fieldname']);
+		array_push($types, $row['wa_type']);
 	}
 	foreach($fields as $field){
 		if(isset($_POST[$field])){ $proceed = TRUE; }
 	}
+
 	if($proceed){
 		for($i = 0; $i <= (count($fields)-1); $i++){
-			if($type[$i] == "checkbox"){
+			if($types[$i] == "checkbox"){
 				$cbv = $_POST[$fields[$i]];
-				$chkvalues = "";
-				for($x=1; $x < count($cbv); $x++){
+				for($x=0; $x < count($cbv); $x++){
 					$chkvalues .= $cbv[$x].",";
 				}
 				$sql3->db_Insert("wowapp_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".$chkvalues."'") or die(mysql_error());
