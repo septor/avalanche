@@ -43,7 +43,8 @@ $eplug_prefs = array(
 	"wowapp_manageaccess" => "",
 	"wowapp_externalallowed" => "1",
 	"wowapp_replymethod" => "pm",
-	"wowapp_wowrecruitlink" => "0"
+	"wowapp_wowrecruitlink" => "0",
+	"wowapp_requiredfieldtext" => "<span style='color: #cc0000;'>*</span> ",
 );
 
 //MYSQL TABLES TO BE CREATED---------------------------------------------------------------------------------+
@@ -59,6 +60,7 @@ $eplug_tables = array(
 		wa_fieldname varchar(250) NOT NULL,
 		wa_type varchar(250) NOT NULL,
 		wa_value text NOT NULL,
+		wa_required tinyint(3) unsigned NOT NULL,
 		PRIMARY KEY  (wa_id)
 	) TYPE=MyISAM AUTO_INCREMENT=1;",
 

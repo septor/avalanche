@@ -8,7 +8,7 @@ require_once(e_ADMIN."auth.php");
 
 if(isset($_POST['create'])){
 	if(isset($_POST['key']) && $_POST['fieldname']){
-		$sql->db_Insert("wowapp_application", "'', '".$tp->toDB($_POST['key'])."', '".$tp->toDB($_POST['fieldname'])."', '".$_POST['type']."', '".$tp->toDB($_POST['value'])."'") or die(mysql_error());
+		$sql->db_Insert("wowapp_application", "'', '".$tp->toDB($_POST['key'])."', '".$tp->toDB($_POST['fieldname'])."', '".$_POST['type']."', '".$tp->toDB($_POST['value'])."', '".$tp->toDB($_POST['required'])."'") or die(mysql_error());
 		$message = "Your field has been created successfully!";
 	}else{
 		$message = "You need to define a question and a fieldname in order for your field to be created.";
@@ -27,7 +27,7 @@ if(isset($_POST['confirmdelete'])){
 	$message = "You have successfully deleted field #".$_POST['id']."!";
 }
 if(isset($_POST['updatefield'])){
-	$sql->db_Update("wowapp_application", "wa_key='".$tp->toDB($_POST['newkey'])."', wa_fieldname='".$tp->toDB($_POST['newfieldname'])."', wa_type='".$tp->toDB($_POST['newtype'])."', wa_value='".$tp->toDB($_POST['newvalue'])."'  WHERE wa_id='".intval($_POST['id'])."'");
+	$sql->db_Update("wowapp_application", "wa_key='".$tp->toDB($_POST['newkey'])."', wa_fieldname='".$tp->toDB($_POST['newfieldname'])."', wa_type='".$tp->toDB($_POST['newtype'])."', wa_value='".$tp->toDB($_POST['newvalue'])."', wa_required='".$tp->toDB($_POST['newrequired'])."'  WHERE wa_id='".intval($_POST['id'])."'");
 	$message = "Your field has been updated successfully!";
 }
 
@@ -49,6 +49,7 @@ if($action == "edit"){
 		$newfieldname = $row2['wa_fieldname'];
 		$newtype = $row2['wa_type'];
 		$newvalue = $row2['wa_value'];
+		$newrequired = $row2['wa_required'];
 	}
 	$toptext = "
 	<form method='post' action='".e_SELF."'>
@@ -80,6 +81,9 @@ if($action == "edit"){
 	<td style='text-align:right;' class='forumheader3'>Value:</td>
 	<td class='forumheader3'><input type='text' name='newvalue' class='tbox' value='".$newvalue."' /></td>
 	</tr>
+	<td style='text-align:right;' class='forumheader3'>Required?:</td>
+	<td class='forumheader3'><input type='checkbox' name='newrequired' value='".$newrequired."' ".($newrequired == true ? " checked='checked'" : "")." /></td>
+	</tr>
 	<tr>
 	<td colspan='2' class='forumheader3' style='text-align:center;'>
 	<input type='submit' class='button' name='updatefield' value='Confirm Changes'> <input type='submit' class='button' value='Cancel Changes'>
@@ -105,6 +109,7 @@ $text = "<div style='text-align:center'>
 		<td class='fcaption'>Field Name</td>
 		<td class='fcaption'>Field Type</td>
 		<td class='fcaption'>Field Values</td>
+		<td class='fcaption'>Required</td>
 	</tr>
 	<tr>
 		<td class='forumheader3'>
@@ -125,15 +130,19 @@ $text = "<div style='text-align:center'>
 		<td class='forumheader3'>
 			<input type='text' name='value' class='tbox' />
 		</td>
+		<td class='forumheader3'>
+			<input type='checkbox' name='required' value='1' />
+		</td>
 	</tr>
 	<tr>
 		<td class='forumheader2'><i>The question you wish to ask the applicant.</i></td>
 		<td class='forumheader2'><i>A name for the field being created. Usually a short word, lower case, without spaces.</i></td>
 		<td class='forumheader2'><i>The type of field to use. Simple questions should use text boxes, long answers should use textareas, multipe choice questions should use radio boxes or drop downs, and multiple-select choices should use checkboxes.</i></td>
 		<td class='forumheader2'><i>The value(s) inside the field types. If you select radio button, checkbox, or drop down; split your choices with a comma.</i></td>
+		<td class='forumheader2'><i>Denotes whether or not the field is required.</i></td>
 	</tr>
 	<tr>
-		<td colspan='4' style='text-align:center' class='forumheader'>
+		<td colspan='5' style='text-align:center' class='forumheader'>
 			<input class='button' type='submit' name='create' value='Create Field' />
 			<input type='reset' class='button' value='Reset' />
 		</td>
@@ -158,6 +167,7 @@ if($sql->db_Count("wowapp_application", "(*)") == 0){
 		<td class='fcaption'>Field Name</td>
 		<td class='fcaption'>Field Type</td>
 		<td class='fcaption'>Field Values</td>
+		<td class='fcaption'>Required</td>
 		<td class='fcaption'>&nbsp;</td>
 	</tr>";
 
@@ -169,6 +179,7 @@ if($sql->db_Count("wowapp_application", "(*)") == 0){
 			<td class='forumheader3'>".$row['wa_fieldname']."</td>
 			<td class='forumheader3'>".$row['wa_type']."</td>
 			<td class='forumheader3'>".$row['wa_value']."</td>
+			<td class='forumheader3'>".($row['wa_required'] == true ? "Yes" : "No")."</td>
 			<td class='forumheader3' style='text-align:center;'><a href='".e_PLUGIN."wowapp/admin_app.php?edit.".$row['wa_id']."'>".ADMIN_EDIT_ICON."</a> <a href='".e_PLUGIN."wowapp/admin_app.php?del.".$row['wa_id']."'>".ADMIN_DELETE_ICON."</a></td>
 		</tr>";
 	}

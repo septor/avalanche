@@ -21,6 +21,7 @@ if(isset($_POST['updatesettings'])){
 		$pref['wowapp_replymethod'] = $tp->toDB($_POST['wowapp_replymethod']);
 		$pref['wowapp_externalallowed'] = $tp->toDB($_POST['wowapp_externalallowed']);
 		$pref['wowapp_wowrecruitlink'] = $tp->toDB($_POST['wowapp_wowrecruit']);
+		$pref['wowapp_requiredfieldtext'] = $tp->toDB($_POST['wowapp_requiredfieldtext']);
 		save_prefs();
 		$message = "Settings saved successfully!";
 	}
@@ -59,7 +60,7 @@ $text = "
 </td>
 </tr>
 <tr>
-<td style='width:50%' class='forumheader3'>Reply method used when contact applicants regarding their acceptance or denial:</td>
+<td style='width:50%' class='forumheader3'>Reply method used when contacting applicants regarding their acceptance or denial:</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
 <select name='wowapp_replymethod' class='tbox'>
 <option value='pm'".($pref['wowapp_replymethod'] == "pm" ? " selected" : "").">PM</option>
@@ -89,6 +90,12 @@ $text = "
 <td style='width:50%' class='forumheader3'>Guild Rules:</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
 <textarea class='tbox' name='wowapp_rules' style='width:90%; height:50px;'>".$pref['wowapp_rules']."</textarea>
+</td>
+</tr>
+<tr>
+<td style='width:50%' class='forumheader3'>Character, image, or text to place before a requied field on the application:</td>
+<td style='width:50%; text-align:right' class='forumheader3'>
+<input type='text' name='wowapp_requiredfieldtext' class='tbox' value='".$pref['wowapp_requiredfieldtext']."' />
 </td>
 </tr>
 <tr>

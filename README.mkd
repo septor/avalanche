@@ -1,3 +1,12 @@
+# Note
+
+If you've installed this plugin prior to 5:05PM EST on Sunday, February 27th, 2011 there have been changes to the database structure that will require
+you to uninstall (deleting the database tables **is** required) and then reinstall the plugin.
+
+**IMPORTANT** 
+
+Failure to do the above **will** result in errors.
+
 # Beta Testing
 
 The beta test will be open to the public, however it will require you to be familiar with downloading the files directly from the repo instead of getting
@@ -6,6 +15,9 @@ will not be provided.
 
 Once you've downloaded the files from the repo (click Downloads and then either the .tar.gz or the .zip buttons) you need to rename the directory that is inside the zipball/tarball
 to `wowapp` before placing it inside your `e107_plugins` directory. Failure to do this will result in the plugin not being recognized by the Plugin Manager.
+
+**Do not** install this plugin on a production website. Chances are there will be times when uninstalling the plugin will be mandatory. With that said, you are more than welcome to install
+the plugin on a production website if you are willing to recreate your fields and people are willing to resubmit their applications over and over.
 
 # Upcoming Features
 
@@ -21,3 +33,9 @@ The above is in no order of importance. No feature has priority over another.
 The following issues are already known, please do not report them:
 
 * No known issues at this time.
+
+# Working As Intended
+
+The follow is a list of things that are working as they are currently designed to work:
+
+* `results.php` is lacking. It is done this way because the file, in it's current form, is mainly for testing to ensure the application data being submitted is actually submitted.

@@ -1,38 +1,56 @@
 <?php
 require_once("../../class2.php");
 require_once(HEADERF);
-include_once(e_HANDLER.'secure_img_handler.php');
+include_once(e_HANDLER."secure_img_handler.php");
+
+global $captcha;
 $captcha = new secure_image;
+$sql3 = new db();
 
 if(USER){
 	if(isset($_POST['apply'])){
 		$fields = array();
 		$types = array();
-		$sql->db_Select("wowapp_application", "*");
-		while($row = $sql->db_Fetch()){
-			array_push($fields, $row['wa_fieldname']);
-			array_push($types, $row['wa_type']);
+		$required = array();
+		$sql2->db_Select("wowapp_application", "*");
+		while($row2 = $sql2->db_Fetch()){
+			array_push($fields, $row2['wa_fieldname']);
+			array_push($types, $row2['wa_type']);
+			array_push($required, $row2['wa_required']);
 		}
 
-		foreach($fields as $field){
-			if(isset($_POST[$field])){ $proceed = TRUE; }
+		for($y = 0; $y <= (count($fields)-1); $y++){
+			if($_POST[$fields[$y]] == ""){
+				if($required[$y] == true){
+					$proceed = false;
+					break;
+				}else{
+					$proceed = true;
+				}
+			}else{
+				$proceed = true;
+			}
 		}
 
 		if($proceed){
-			for($i = 0; $i <= (count($fields)-1); $i++){
-				if($types[$i] == "checkbox"){
-					$cbv = $_POST[$fields[$i]];
-					for($x = 0; $x < count($cbv); $x++){
-						$chkvalues .= $cbv[$x].",";
+			if($captcha->verify_code($_POST['rand_num'], $_POST['code_verify'])){
+				for($i = 0; $i <= (count($fields)-1); $i++){
+					if($types[$i] == "checkbox"){
+						$cbv = $_POST[$fields[$i]];
+						for($x = 0; $x < count($cbv); $x++){
+							$chkvalues .= $cbv[$x].",";
+						}
+						$sql3->db_Insert("wowapp_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".$chkvalues."'") or die(mysql_error());
+					}else{
+						$sql3->db_Insert("wowapp_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".$_POST[$fields[$i]]."'") or die(mysql_error());
 					}
-					$sql2->db_Insert("wowapp_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".$chkvalues."'") or die(mysql_error());
-				}else{
-					$sql2->db_Insert("wowapp_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".$_POST[$fields[$i]]."'") or die(mysql_error());
 				}
+				$message = "Your application has been submitted successfully.<br />You will be contacted when a decision has been made.";
+			}else{
+				$message = "Security code is incorrect!";
 			}
-			$message = "Your application has been submitted successfully. You will be contacted when a decision has been made.";
 		}else{
-			$message = "All fields are required. Fill them in and resubmit your application.";
+			$message = "Please fill in all required fields to submit your application.";
 		}
 	}
 
@@ -59,13 +77,13 @@ if(USER){
 	}
 
 	$text .= "<tr>
-	<td style='width:40%; text-align:left;'>&nbsp;</td>
+	<td style='width:50%; text-align:left;'>&nbsp;</td>
 	<td>&nbsp;</td>
 	</tr>";
 
 	while($row = $sql->db_Fetch()){
 		$text .= "<tr>
-		<td style='text-align:left;'>".$row['wa_key']."</td>
+		<td style='text-align:left;'>".($row['wa_required'] == true ? ($pref['wowapp_requiredfieldtext'] == "" ? "<span style='color: #cc0000;'>*</span> " : $tp->toHTML($pref['wowapp_requiredfieldtext'])) : "").$row['wa_key']."</td>
 		<td style='text-align:right;'>";
 
 		if($row['wa_type'] == "textbox"){
@@ -113,6 +131,9 @@ if(USER){
 	</tr>
 	<tr>
 	<td colspan='2'><input type='submit' class='button' name='apply' value='Submit Application' /> <input type='reset' class='button' value='Start Over' /></td>
+	</tr>
+	<tr>
+	<td colspan='2'>".($pref['wowapp_requiredfieldtext'] == "" ? "<span style='color: #cc0000;'>*</span> " : $tp->toHTML($pref['wowapp_requiredfieldtext']))." - denotes a required field.</td>
 	</tr>
 	</table>
 	</form>
