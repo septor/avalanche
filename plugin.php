@@ -3,7 +3,7 @@
 //PLUGIN INFO------------------------------------------------------------------------------------------------+
 
 $eplug_name        = "WoW Guild Application";
-$eplug_version     = "ALPHA.1";
+$eplug_version     = "BETA";
 $eplug_author      = "Patrick Weaver";
 $eplug_url         = "http://painswitch.com/";
 $eplug_email       = "patrickweaver@gmail.com";
