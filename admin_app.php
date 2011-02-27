@@ -15,8 +15,86 @@ if(isset($_POST['create'])){
 	}
 }
 
+if(e_QUERY){
+	$tmp = explode(".", e_QUERY);
+	$action = $tmp[0];
+	$id = $tmp[1];
+	unset($tmp);
+}
+
+if(isset($_POST['confirmdelete'])){
+	$sql->db_Delete("wowapp_application", "wa_id='".intval($_POST['id'])."'");
+	$message = "You have successfully deleted field #".$_POST['id']."!";
+}
+if(isset($_POST['updatefield'])){
+	$sql->db_Update("wowapp_application", "wa_key='".$tp->toDB($_POST['newkey'])."', wa_fieldname='".$tp->toDB($_POST['newfieldname'])."', wa_type='".$tp->toDB($_POST['newtype'])."', wa_value='".$tp->toDB($_POST['newvalue'])."'  WHERE wa_id='".intval($_POST['id'])."'");
+	$message = "Your field has been updated successfully!";
+}
+
+if($action == "del"){
+	$topcap = "Confirm Delete";
+	$toptext = "
+	<form method='post' action='".e_SELF."'>
+	Really delete field #".$id."?<br />
+	<input type='submit' class='button' name='confirmdelete' value='Yes'> <input type='submit' class='button' value='No'>
+	<input type='hidden' name='id' value='".$id."'>
+	</form>";
+}
+
+if($action == "edit"){
+	$topcap = "Edit Question";
+	$sql2->db_Select("wowapp_application", "*", "wa_id='".$id."'");
+	while($row2 = $sql2->db_Fetch()){
+		$newkey = $row2['wa_key'];
+		$newfieldname = $row2['wa_fieldname'];
+		$newtype = $row2['wa_type'];
+		$newvalue = $row2['wa_value'];
+	}
+	$toptext = "
+	<form method='post' action='".e_SELF."'>
+	<table style='width:40%' class='fborder'>
+	<tr>
+	<td class='fcaption' colspan='2'>
+	Modifying field #".$id."...
+	</td>
+	</tr>
+	<tr>
+	<td style='text-align:right;' class='forumheader3'>Question:</td>
+	<td class='forumheader3'><input type='text' name='newkey' class='tbox' value='".$newkey."' /></td>
+	</tr>
+	<tr>
+	<td style='text-align:right;' class='forumheader3'>Field Name:</td>
+	<td class='forumheader3'><input type='text' name='newfieldname' class='tbox' value='".$newfieldname."' /></td>
+	</tr>
+	<tr>
+	<td style='text-align:right;' class='forumheader3'>Field Type:</td>
+	<td class='forumheader3'><select name='newtype' class='tbox'>
+	<option value='textbox'".($newtype == "textbox" ? " selected='yes'" : "").">Text Box</option>
+	<option value='textarea'".($newtype == "textarea" ? " selected='yes'" : "").">Text Area</option>
+	<option value='radio'".($newtype == "radio" ? " selected='yes'" : "").">Radio Button</option>
+	<option value='checkbox'".($newtype == "checkbox" ? " selected='yes'" : "").">Checkbox</option>
+	<option value='dropdown'".($newtype == "dropdown" ? " selected='yes'" : "").">Drop Down</option>
+	</select></td>
+	</tr>
+	<tr>
+	<td style='text-align:right;' class='forumheader3'>Value:</td>
+	<td class='forumheader3'><input type='text' name='newvalue' class='tbox' value='".$newvalue."' /></td>
+	</tr>
+	<tr>
+	<td colspan='2' class='forumheader3' style='text-align:center;'>
+	<input type='submit' class='button' name='updatefield' value='Confirm Changes'> <input type='submit' class='button' value='Cancel Changes'>
+	<input type='hidden' name='id' value='".$id."'>
+	</tr>
+	</table>
+	</form>";
+}
+
 if (isset($message)) {
 	$ns->tablerender("", "<div style='text-align:center'><b>".$message."</b></div>");
+}
+
+if (isset($toptext)) {
+	$ns->tablerender($topcap, "<div style='text-align:center'>".$toptext."</div>");
 }
 
 $text = "<div style='text-align:center'>
@@ -75,6 +153,7 @@ if($sql->db_Count("wowapp_application", "(*)") == 0){
 	$text2 .= "
 	<table style='width:90%' class='fborder'>
 	<tr>
+		<td class='fcaption'>ID</td>
 		<td class='fcaption'>Question</td>
 		<td class='fcaption'>Field Name</td>
 		<td class='fcaption'>Field Type</td>
@@ -85,11 +164,12 @@ if($sql->db_Count("wowapp_application", "(*)") == 0){
 	while($row = $sql->db_Fetch()){
 		$text2 .= "
 		<tr>
+			<td class='forumheader3'>".$row['wa_id']."</td>
 			<td class='forumheader3'>".$row['wa_key']."</td>
 			<td class='forumheader3'>".$row['wa_fieldname']."</td>
 			<td class='forumheader3'>".$row['wa_type']."</td>
 			<td class='forumheader3'>".$row['wa_value']."</td>
-			<td class='forumheader3'><a href='#'>".ADMIN_EDIT_ICON."</a> <a href='#'>".ADMIN_DELETE_ICON."</a></td>
+			<td class='forumheader3' style='text-align:center;'><a href='".e_PLUGIN."wowapp/admin_app.php?edit.".$row['wa_id']."'>".ADMIN_EDIT_ICON."</a> <a href='".e_PLUGIN."wowapp/admin_app.php?del.".$row['wa_id']."'>".ADMIN_DELETE_ICON."</a></td>
 		</tr>";
 	}
 
