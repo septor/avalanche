@@ -9,8 +9,6 @@ to `wowapp` before placing it inside your `e107_plugins` directory. Failure to d
 
 # Upcoming Features
 
-The application creations still lacks the ability to edit and remove questions. This is the next thing that will get worked on.
-
 * Armory Information Setup
 * Armory Gathering
 * Application Review
