@@ -32,25 +32,39 @@ if(USER){
 			}
 		}
 
-		if($proceed){
-			if($captcha->verify_code($_POST['rand_num'], $_POST['code_verify'])){
-				for($i = 0; $i <= (count($fields)-1); $i++){
-					if($types[$i] == "checkbox"){
-						$cbv = $_POST[$fields[$i]];
-						for($x = 0; $x < count($cbv); $x++){
-							$chkvalues .= $cbv[$x].",";
-						}
-						$sql3->db_Insert("wowapp_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".$chkvalues."'") or die(mysql_error());
-					}else{
-						$sql3->db_Insert("wowapp_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".$_POST[$fields[$i]]."'") or die(mysql_error());
-					}
-				}
-				$message = "Your application has been submitted successfully.<br />You will be contacted when a decision has been made.";
+		if($pref['wowapp_rulesrequired'] == true && $pref['wowapp_rules'] != ""){
+			if($_POST['acceptrules'] == true){
+				$tenfour_rules = true;
 			}else{
-				$message = "Security code is incorrect!";
+				$tenfour_rules = false;
 			}
 		}else{
-			$message = "Please fill in all required fields to submit your application.";
+			$tenfour_rules = true;
+		}
+		
+		if($tenfour_rules){
+			if($proceed){
+				if($captcha->verify_code($_POST['rand_num'], $_POST['code_verify'])){
+					for($i = 0; $i <= (count($fields)-1); $i++){
+						if($types[$i] == "checkbox"){
+							$cbv = $_POST[$fields[$i]];
+							for($x = 0; $x < count($cbv); $x++){
+								$chkvalues .= $cbv[$x].",";
+							}
+							$sql3->db_Insert("wowapp_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".$chkvalues."'") or die(mysql_error());
+						}else{
+							$sql3->db_Insert("wowapp_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".$tp->toDB($_POST[$fields[$i]])."'") or die(mysql_error());
+						}
+					}
+					$message = "Your application has been submitted successfully.<br />You will be contacted when a decision has been made.";
+				}else{
+					$message = "Security code is incorrect!";
+				}
+			}else{
+				$message = "Please fill in all required fields to submit your application.";
+			}
+		}else{
+			$message = "You need to accept our rules and regulations before you can proceed.";
 		}
 	}
 
@@ -67,7 +81,7 @@ if(USER){
 	if($pref['wowapp_rulesrequired'] == true && $pref['wowapp_rules'] != ""){
 		$text .= "<tr>
 		<td colspan='2' style='text-align:justify;'>
-		".$pref['wowapp_rules']."
+		".$tp->toHTML($pref['wowapp_rules'], true)."
 		<br /><br />
 		<div style='text-align:center;'>
 		Do you accept these rules? <input type='checkbox' name='acceptrules' value='1' />
