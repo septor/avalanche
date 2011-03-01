@@ -82,7 +82,7 @@ if($action == "edit"){
 	<td class='forumheader3'><input type='text' name='newvalue' class='tbox' value='".$newvalue."' /></td>
 	</tr>
 	<td style='text-align:right;' class='forumheader3'>Required?:</td>
-	<td class='forumheader3'><input type='checkbox' name='newrequired' value='".$newrequired."' ".($newrequired == true ? " checked='checked'" : "")." /></td>
+	<td class='forumheader3'><input type='checkbox' name='newrequired' value='1' ".($newrequired == true ? " checked" : "")." /></td>
 	</tr>
 	<tr>
 	<td colspan='2' class='forumheader3' style='text-align:center;'>
