@@ -38,6 +38,7 @@ $eplug_prefs = array(
 	"avalanche_guildname" => "",
 	"avalanche_rules" => "",
 	"avalanche_rulesrequired" => "1",
+	"avalanche_applyaccess" => "",
 	"avalanche_viewaccess" => "",
 	"avalanche_rankaccess" => "",
 	"avalanche_manageaccess" => "",
