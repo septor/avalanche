@@ -21,6 +21,7 @@ if(isset($_POST['updatesettings'])){
 		$pref['avalanche_applyaccess'] = $_POST['avalanche_applyaccess'];
 		$pref['avalanche_replymethod'] = $tp->toDB($_POST['avalanche_replymethod']);
 		$pref['avalanche_requiredfieldtext'] = $tp->toDB($_POST['avalanche_requiredfieldtext']);
+		$pref['avalanche_applyamount'] = $tp->toDB($_POST['avalanche_applyamount']);
 		save_prefs();
 		$message = "Settings saved successfully!";
 	}
@@ -41,9 +42,15 @@ $text = "
 </td>
 </tr>
 <tr>
+<td style='width:50%' class='forumheader3'>Amount of times a user can submit an application?</td>
+<td style='width:50%; text-align:right' class='forumheader3'>
+<input type='text' name='avalanche_applyamount' class='tbox' value='".$pref['avalanche_applyamount']."' />
+</td>
+</tr>
+<tr>
 <td style='width:50%' class='forumheader3'>Who can submit applications?</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
-".r_userclass('avalanche_applyaccess', $pref['avalanche_applyaccess'], 'off', 'nobody,guest,member,admin,classes')."
+".r_userclass('avalanche_applyaccess', $pref['avalanche_applyaccess'], 'off', 'nobody,member,admin,classes')."
 </td>
 </tr>
 <tr>
@@ -74,6 +81,12 @@ $text = "
 </td>
 </tr>
 <tr>
+<td style='width:50%' class='forumheader3'>Character, image, or text to place before a requied field on the application:<br /><i>Image tags are <b>not</b> inserted!</i></td>
+<td style='width:50%; text-align:right' class='forumheader3'>
+<input type='text' name='avalanche_requiredfieldtext' class='tbox' value='".$pref['avalanche_requiredfieldtext']."' />
+</td>
+</tr>
+<tr>
 <td style='width:50%' class='forumheader3'>Require applicants to agree to your guild rules before their application is submitted?</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
 <input type='checkbox' name='avalanche_rulesrequired' value='1'".($pref['avalanche_rulesrequired'] == 1 ? " checked='checked'" : "")." />
@@ -83,12 +96,6 @@ $text = "
 <td style='width:50%' class='forumheader3'>Guild Rules:</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
 <textarea class='tbox' name='avalanche_rules' style='width:90%; height:50px;'>".$pref['avalanche_rules']."</textarea>
-</td>
-</tr>
-<tr>
-<td style='width:50%' class='forumheader3'>Character, image, or text to place before a requied field on the application:</td>
-<td style='width:50%; text-align:right' class='forumheader3'>
-<input type='text' name='avalanche_requiredfieldtext' class='tbox' value='".$pref['avalanche_requiredfieldtext']."' />
 </td>
 </tr>
 <tr>

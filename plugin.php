@@ -44,6 +44,7 @@ $eplug_prefs = array(
 	"avalanche_manageaccess" => "",
 	"avalanche_replymethod" => "pm",
 	"avalanche_requiredfieldtext" => "<span style='color: #cc0000;'>*</span> ",
+	"avalanche_applyamount" => "1"
 );
 
 //MYSQL TABLES TO BE CREATED---------------------------------------------------------------------------------+
