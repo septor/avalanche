@@ -8,7 +8,7 @@ require_once(e_ADMIN."auth.php");
 
 if(isset($_POST['create'])){
 	if(isset($_POST['key']) && $_POST['fieldname']){
-		$sql->db_Insert("wowapp_application", "'', '".$tp->toDB($_POST['key'])."', '".$tp->toDB($_POST['fieldname'])."', '".$_POST['type']."', '".$tp->toDB($_POST['value'])."', '".$tp->toDB($_POST['required'])."'") or die(mysql_error());
+		$sql->db_Insert("avalanche_application", "'', '".$tp->toDB($_POST['key'])."', '".$tp->toDB($_POST['fieldname'])."', '".$_POST['type']."', '".$tp->toDB($_POST['value'])."', '".$tp->toDB($_POST['required'])."'") or die(mysql_error());
 		$message = "Your field has been created successfully!";
 	}else{
 		$message = "You need to define a question and a fieldname in order for your field to be created.";
@@ -23,11 +23,11 @@ if(e_QUERY){
 }
 
 if(isset($_POST['confirmdelete'])){
-	$sql->db_Delete("wowapp_application", "wa_id='".intval($_POST['id'])."'");
+	$sql->db_Delete("avalanche_application", "av_id='".intval($_POST['id'])."'");
 	$message = "You have successfully deleted field #".$_POST['id']."!";
 }
 if(isset($_POST['updatefield'])){
-	$sql->db_Update("wowapp_application", "wa_key='".$tp->toDB($_POST['newkey'])."', wa_fieldname='".$tp->toDB($_POST['newfieldname'])."', wa_type='".$tp->toDB($_POST['newtype'])."', wa_value='".$tp->toDB($_POST['newvalue'])."', wa_required='".$tp->toDB($_POST['newrequired'])."'  WHERE wa_id='".intval($_POST['id'])."'");
+	$sql->db_Update("avalanche_application", "av_key='".$tp->toDB($_POST['newkey'])."', av_fieldname='".$tp->toDB($_POST['newfieldname'])."', av_type='".$tp->toDB($_POST['newtype'])."', av_value='".$tp->toDB($_POST['newvalue'])."', av_required='".$tp->toDB($_POST['newrequired'])."'  WHERE av_id='".intval($_POST['id'])."'");
 	$message = "Your field has been updated successfully!";
 }
 
@@ -43,13 +43,13 @@ if($action == "del"){
 
 if($action == "edit"){
 	$topcap = "Edit Question";
-	$sql2->db_Select("wowapp_application", "*", "wa_id='".$id."'");
+	$sql2->db_Select("avalanche_application", "*", "av_id='".$id."'");
 	while($row2 = $sql2->db_Fetch()){
-		$newkey = $row2['wa_key'];
-		$newfieldname = $row2['wa_fieldname'];
-		$newtype = $row2['wa_type'];
-		$newvalue = $row2['wa_value'];
-		$newrequired = $row2['wa_required'];
+		$newkey = $row2['av_key'];
+		$newfieldname = $row2['av_fieldname'];
+		$newtype = $row2['av_type'];
+		$newvalue = $row2['av_value'];
+		$newrequired = $row2['av_required'];
 	}
 	$toptext = "
 	<form method='post' action='".e_SELF."'>
@@ -151,14 +151,14 @@ $text = "<div style='text-align:center'>
 </form>
 </div>";
 
-$ns->tablerender("Configure WoW Guild Applcation: Application Information", $text);
+$ns->tablerender("Configure Avalanche: Application Information", $text);
 
 $text2 = "<div style='text-align:center'>";
 
-if($sql->db_Count("wowapp_application", "(*)") == 0){
+if($sql->db_Count("avalanche_application", "(*)") == 0){
 	$text2 .= "No fields have been created at this time.";
 }else{
-	$sql->db_Select("wowapp_application", "*") or die(mysql_error());
+	$sql->db_Select("avalanche_application", "*") or die(mysql_error());
 	$text2 .= "
 	<table style='width:90%' class='fborder'>
 	<tr>
@@ -174,13 +174,13 @@ if($sql->db_Count("wowapp_application", "(*)") == 0){
 	while($row = $sql->db_Fetch()){
 		$text2 .= "
 		<tr>
-			<td class='forumheader3'>".$row['wa_id']."</td>
-			<td class='forumheader3'>".$row['wa_key']."</td>
-			<td class='forumheader3'>".$row['wa_fieldname']."</td>
-			<td class='forumheader3'>".$row['wa_type']."</td>
-			<td class='forumheader3'>".$row['wa_value']."</td>
-			<td class='forumheader3'>".($row['wa_required'] == true ? "Yes" : "No")."</td>
-			<td class='forumheader3' style='text-align:center;'><a href='".e_PLUGIN."wowapp/admin_app.php?edit.".$row['wa_id']."'>".ADMIN_EDIT_ICON."</a> <a href='".e_PLUGIN."wowapp/admin_app.php?del.".$row['wa_id']."'>".ADMIN_DELETE_ICON."</a></td>
+			<td class='forumheader3'>".$row['av_id']."</td>
+			<td class='forumheader3'>".$row['av_key']."</td>
+			<td class='forumheader3'>".$row['av_fieldname']."</td>
+			<td class='forumheader3'>".$row['av_type']."</td>
+			<td class='forumheader3'>".$row['av_value']."</td>
+			<td class='forumheader3'>".($row['av_required'] == true ? "Yes" : "No")."</td>
+			<td class='forumheader3' style='text-align:center;'><a href='".e_PLUGIN."avalanche/admin_app.php?edit.".$row['av_id']."'>".ADMIN_EDIT_ICON."</a> <a href='".e_PLUGIN."avalanche/admin_app.php?del.".$row['av_id']."'>".ADMIN_DELETE_ICON."</a></td>
 		</tr>";
 	}
 
@@ -189,7 +189,7 @@ if($sql->db_Count("wowapp_application", "(*)") == 0){
 
 $text2 .= "</div>";
 
-$ns->tablerender("Configure WoW Guild Application: Created Fields", $text2);
+$ns->tablerender("Configure Avalanche: Created Fields", $text2);
 
 require_once(e_ADMIN."footer.php");
 

@@ -1,38 +1,57 @@
-# Note
+# Alpha Testing
 
-If you've installed this plugin prior to 5:05PM EST on Sunday, February 27th, 2011 there have been changes to the database structure that will require
-you to uninstall (deleting the database tables **is** required) and then reinstall the plugin.
-
-**IMPORTANT** 
-
-Failure to do the above **will** result in errors.
-
-# Beta Testing
-
-The beta test will be open to the public, however it will require you to be familiar with downloading the files directly from the repo instead of getting
+The alpha test will be open to the public, however it will require you to be familiar with downloading the files directly from the repo instead of getting
 a zip file from the downloads section. It's not hard at all, but support related to improperly installing the plugin because you cannot follow the the below instructions
 will not be provided.
 
 Once you've downloaded the files from the repo (click Downloads and then either the .tar.gz or the .zip buttons) you need to rename the directory that is inside the zipball/tarball
-to `wowapp` before placing it inside your `e107_plugins` directory. Failure to do this will result in the plugin not being recognized by the Plugin Manager.
+to `avalanche` before placing it inside your `e107_plugins` directory. Failure to do this will result in the plugin not being recognized by the Plugin Manager.
 
-**Do not** install this plugin on a production website. Chances are there will be times when uninstalling the plugin will be mandatory. With that said, you are more than welcome to install
-the plugin on a production website if you are willing to recreate your fields and people are willing to resubmit their applications over and over.
+**Do not** install this plugin on a production website. Chances are there will be times when uninstalling and reinstalling the plugin will be mandatory.
+
+Finally, the plugin is not even close to finished. Many features will be lacking until the plugin goes into the beta phase. When you install this for testing you are just
+testing what is there right now. Your suggestions and feature requests are welcome, so long as they are not already planned and mentioned elsewhere. (You can still send the
+suggestions and whatnot, but don't expect a reply to them.)
+
+
+# Modularity
+
+After a few days of thinking I've come to the conclusion that this plugin will be too awesome to just be World of Warcraft only. Due to this revelation I've decided to finish
+adding the Review and Management (read the Upcoming Features section for more info on these) potions and then develop a way for people to add in "extra" support for their game
+of choice. Now, I know the people that were watching this plugin waiting for the awesome Armory gathering feature are thinking, "uh, wtf?". Rest easy, friends, that is still
+coming. It's just going to be implemented differently.
+
+## What Modules will this come with?
+
+Currently, just the World of Warcraft module.
+
+## How will it work?
+
+I'm not willing to discuss that just yet. There's still some ideas I need to iron out first.
+
+## Will this "modularity" slow the development of the plugin?
+
+Absolutly not. I plan on developing the module support *after* the plugin has been put into beta (this is actually partly a lie, I plan on adding in some support for it before this,
+but it won't affect the development speed). The modules are just going to be extras (think of modules as plugins and Avalance as e107)
+and won't be needed to run the plugin. Avalance will work just fine without any modules enabled.
+
 
 # Upcoming Features
 
-* Armory Information Setup
-* Armory Gathering
-* Application Review
+* Application Review (listing of all applications)
 * Application Management (voting, approval of app, denial of app)
+* Module Support
+* WoW Module
 
-The above is in no order of importance. No feature has priority over another.
+*Listed items are in the order in which they will be completed*
+
 
 # Known Issues
 
 The following issues are already known, please do not report them:
 
 * No known issues at this time.
+
 
 # Working As Intended
 

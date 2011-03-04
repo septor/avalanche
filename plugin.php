@@ -2,12 +2,12 @@
 
 //PLUGIN INFO------------------------------------------------------------------------------------------------+
 
-$eplug_name        = "WoW Guild Application";
-$eplug_version     = "BETA";
+$eplug_name        = "Avalanche";
+$eplug_version     = "ALPHA";
 $eplug_author      = "Patrick Weaver";
 $eplug_url         = "http://painswitch.com/";
 $eplug_email       = "patrickweaver@gmail.com";
-$eplug_description = "World of Warcraft Guild Application";
+$eplug_description = "Modular Group Application Manager";
 $eplug_compatible  = "e107 0.7+";
 $eplug_readme      = "";
 $eplug_compliant   = TRUE;
@@ -15,7 +15,7 @@ $eplug_module      = FALSE;
 
 //PLUGIN FOLDER----------------------------------------------------------------------------------------------+
 
-$eplug_folder     = "wowapp";
+$eplug_folder     = "avalanche";
 
 //PLUGIN MENU FILE-------------------------------------------------------------------------------------------+
 
@@ -30,63 +30,53 @@ $eplug_conffile   = "admin_config.php";
 $eplug_logo       = "";
 $eplug_icon       = "";
 $eplug_icon_small = "";
-$eplug_caption    = "Configure WoW Guild Application";
+$eplug_caption    = "Configure Avalanche";
 
 //DEFAULT PREFERENCES----------------------------------------------------------------------------------------+
 
 $eplug_prefs = array(
-	"wowapp_guildname" => "",
-	"wowapp_rules" => "",
-	"wowapp_rulesrequired" => "1",
-	"wowapp_viewaccess" => "",
-	"wowapp_rankaccess" => "",
-	"wowapp_manageaccess" => "",
-	"wowapp_externalallowed" => "1",
-	"wowapp_replymethod" => "pm",
-	"wowapp_wowrecruitlink" => "0",
-	"wowapp_requiredfieldtext" => "<span style='color: #cc0000;'>*</span> ",
+	"avalanche_guildname" => "",
+	"avalanche_rules" => "",
+	"avalanche_rulesrequired" => "1",
+	"avalanche_viewaccess" => "",
+	"avalanche_rankaccess" => "",
+	"avalanche_manageaccess" => "",
+	"avalanche_replymethod" => "pm",
+	"avalanche_requiredfieldtext" => "<span style='color: #cc0000;'>*</span> ",
 );
 
 //MYSQL TABLES TO BE CREATED---------------------------------------------------------------------------------+
 
-$eplug_table_names = array("wowapp_application", "wowapp_request", "wowapp_comment", "wowapp_armory");
+$eplug_table_names = array("avalanche_application", "avalanche_request", "avalanche_comment");
 
 //MYSQL TABLE STRUCTURE--------------------------------------------------------------------------------------+
 
 $eplug_tables = array(
-	"CREATE TABLE ".MPREFIX."wowapp_application (
-		wa_id int(10) unsigned NOT NULL auto_increment,
-		wa_key varchar(250) NOT NULL,
-		wa_fieldname varchar(250) NOT NULL,
-		wa_type varchar(250) NOT NULL,
-		wa_value text NOT NULL,
-		wa_required tinyint(3) unsigned NOT NULL,
-		PRIMARY KEY  (wa_id)
+	"CREATE TABLE ".MPREFIX."avalanche_application (
+		av_id int(10) unsigned NOT NULL auto_increment,
+		av_key varchar(250) NOT NULL,
+		av_fieldname varchar(250) NOT NULL,
+		av_type varchar(250) NOT NULL,
+		av_value text NOT NULL,
+		av_required tinyint(3) unsigned NOT NULL,
+		PRIMARY KEY  (av_id)
 	) TYPE=MyISAM AUTO_INCREMENT=1;",
 
-	"CREATE TABLE ".MPREFIX."wowapp_request (
-		wa_id int(10) unsigned NOT NULL auto_increment,
-		wa_uid int(10) unsigned NOT NULL,
-		wa_qid int(10) unsigned NOT NULL,
-		wa_value text NOT NULL,
-		PRIMARY KEY  (wa_id)
+	"CREATE TABLE ".MPREFIX."avalanche_request (
+		av_id int(10) unsigned NOT NULL auto_increment,
+		av_uid int(10) unsigned NOT NULL,
+		av_qid int(10) unsigned NOT NULL,
+		av_value text NOT NULL,
+		PRIMARY KEY  (av_id)
 	) TYPE=MyISAM AUTO_INCREMENT=1;",
 
-	"CREATE TABLE ".MPREFIX."wowapp_comment (
-		wa_id int(10) unsigned NOT NULL auto_increment,
-		wa_uid int(10) unsigned NOT NULL,
-		wa_aid int(10) unsigned NOT NULL,
-		wa_comment text NOT NULL,
-		wa_vote int(10) unsigned NOT NULL default '2',
-		PRIMARY KEY  (wa_id)
-	) TYPE=MyISAM AUTO_INCREMENT=1;",
-
-	"CREATE TABLE ".MPREFIX."wowapp_armory (
-		wa_id int(10) unsigned NOT NULL auto_increment,
-		wa_class varchar(250) NOT NULL,
-		wa_spec varchar(250) NOT NULL,
-		wa_gather varchar(250) NOT NULL,
-		PRIMARY KEY  (wa_id)
+	"CREATE TABLE ".MPREFIX."avalanche_comment (
+		av_id int(10) unsigned NOT NULL auto_increment,
+		av_uid int(10) unsigned NOT NULL,
+		av_aid int(10) unsigned NOT NULL,
+		av_comment text NOT NULL,
+		av_vote int(10) unsigned NOT NULL default '2',
+		PRIMARY KEY  (av_id)
 	) TYPE=MyISAM AUTO_INCREMENT=1;"
 );
 

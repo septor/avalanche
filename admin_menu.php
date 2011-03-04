@@ -1,6 +1,6 @@
 <?php
 
-$menutitle  = "WoW Guild Application Navigation";
+$menutitle  = "Avalanche Navigation";
 
 $butname[]  = "Configuration";
 $butlink[]  = "admin_config.php";

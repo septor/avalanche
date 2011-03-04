@@ -1,10 +1,10 @@
 <?php
 
 require_once("../../class2.php");
-require_once(e_PLUGIN."wowapp/class.php");
+require_once(e_PLUGIN."avalanche/class.php");
 require_once(HEADERF);
 
-if(check_class($pref['wowapp_viewaccess'])){
+if(check_class($pref['avalanche_viewaccess'])){
 	$text = "This file is for testing purposes only. It will more than likely not be in the final release. The purpose of this file is to display the
 	results of the answers submitted on the apply.php page. If you notice anything wonky with the displaying of answers based on the questions,
 	please report the error to me. Creating complex applications and answering them in complex ways will help make this phase go by quickly.
@@ -18,34 +18,34 @@ if(check_class($pref['wowapp_viewaccess'])){
 	<td style='width:50%' class='fcaption'>answer(s)</td>
 	</tr>";
 
-	$sql->db_Select("wowapp_request", "*");
+	$sql->db_Select("avalanche_request", "*");
 	while($row = $sql->db_Fetch()){
 
-		$question = provokeQuestion($row['wa_qid']);
-		$type = provokeQuestion($row['wa_qid'], "type");
-		$values = provokeQuestion($row['wa_qid'], "value");
+		$question = provokeQuestion($row['av_qid']);
+		$type = provokeQuestion($row['av_qid'], "type");
+		$values = provokeQuestion($row['av_qid'], "value");
 
-		$user = get_user_data($row['wa_uid']);
-		$username = "<a href='".e_BASE."user.php?id.".$row['wa_uid']."'>".$user["user_name"]."</a>";
+		$user = get_user_data($row['av_uid']);
+		$username = "<a href='".e_BASE."user.php?id.".$row['av_uid']."'>".$user["user_name"]."</a>";
 
 		if($type == "radio"){
 			$values = explode(",", $values);
-			$answer = $values[$row['wa_value']];
+			$answer = $values[$row['av_value']];
 
 		}else if($type == "dropdown"){
 			$values = explode(",", $values);
-			$answer = $values[$row['wa_value']];
+			$answer = $values[$row['av_value']];
 
 		}else if($type == "checkbox"){
 			$values = explode(",", $values);
-			$checked = explode(",", $row['wa_value']);
+			$checked = explode(",", $row['av_value']);
 			$answer = $values[$checked[0]];
 			for($i = 1; $i <= (count($checked)-2); $i++){
 				$answer .= ", ".$values[$checked[$i]];
 			}
 
 		}else{
-			$answer = $row['wa_value'];
+			$answer = $row['av_value'];
 		}
 
 		$text .= "<tr>
