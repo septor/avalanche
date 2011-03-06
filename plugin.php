@@ -68,6 +68,7 @@ $eplug_tables = array(
 		av_id int(10) unsigned NOT NULL auto_increment,
 		av_uid int(10) unsigned NOT NULL,
 		av_qid int(10) unsigned NOT NULL,
+		av_aid int(10) unsigned NOT NULL,
 		av_value text NOT NULL,
 		PRIMARY KEY  (av_id)
 	) TYPE=MyISAM AUTO_INCREMENT=1;",

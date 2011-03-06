@@ -9,7 +9,18 @@ $sql3 = new db();
 $sql4 = new db();
 
 if(check_class($pref['avalanche_applyaccess'])){
-	if($sql4->db_Count("avalanche_request", "(*)", "WHERE uid='".intval(USERID)."'") < $pref['avalanche_applyamount']){
+
+	$ta1 = $sql4->db_Count("avalanche_request", "(*)", "WHERE av_uid='".intval(USERID)."'") or die(mysql_error());
+	$ta2 = $sql4->db_Count("avalanche_application", "(*)") or die(mysql_error());
+	$times_applied = $ta1 / $ta2;
+
+	if($times_applied < $pref['avalanche_applyamount']){
+
+		$sql3->db_Select("avalanche_request", "*", "ORDER BY av_aid DESC LIMIT 1", "no-where");
+		while($row3 = $sql3->db_Fetch()){
+			$app_id = $row3['av_aid'] + 1;
+		}
+
 		if(isset($_POST['apply'])){
 			$fields = array();
 			$types = array();
@@ -35,11 +46,7 @@ if(check_class($pref['avalanche_applyaccess'])){
 			}
 
 			if($pref['avalanche_rulesrequired'] == true && $pref['avalanche_rules'] != ""){
-				if($_POST['acceptrules'] == true){
-					$tenfour_rules = true;
-				}else{
-					$tenfour_rules = false;
-				}
+				$tenfour_rules = ($_POST['acceptrules'] == true ? true : false);
 			}else{
 				$tenfour_rules = true;
 			}
@@ -53,9 +60,9 @@ if(check_class($pref['avalanche_applyaccess'])){
 								for($x = 0; $x < count($cbv); $x++){
 									$chkvalues .= $cbv[$x].",";
 								}
-								$sql3->db_Insert("avalanche_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".$chkvalues."'") or die(mysql_error());
+								$sql3->db_Insert("avalanche_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".intval($app_id)."', '".$chkvalues."'") or die(mysql_error());
 							}else{
-								$sql3->db_Insert("avalanche_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".$tp->toDB($_POST[$fields[$i]])."'") or die(mysql_error());
+								$sql3->db_Insert("avalanche_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".intval($app_id)."', '".$tp->toDB($_POST[$fields[$i]])."'") or die(mysql_error());
 							}
 						}
 						$message = "Your application has been submitted successfully.<br />You will be contacted when a decision has been made.";
@@ -157,7 +164,8 @@ if(check_class($pref['avalanche_applyaccess'])){
 
 		$ns->tablerender("Apply to ".$pref['avalanche_guildname'], $text);
 	}else{
-		$ns->tablerender("Whoa whoa whoa..", "You've already submitted the maximum amount of applications allowed. If you haven't been contacted yet your application is still under review. We will contact you as soon as we have made a decision on your application.");
+		$ns->tablerender("Application Limit Met", "<div style='text-align:center'>You've already submitted the maximum amount of applications allowed.<br />
+		Will we contact you when a decision has been made regarding your application.</div>");
 	}
 }else{
 	$ns->tablerender("Access Denied! :D", "You do not have the correct access to view this page.");

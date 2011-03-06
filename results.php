@@ -13,6 +13,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 
 	<table style='width:90%' class='fborder'>
 	<tr>
+	<td style='width:10%' class='fcaption'>app id</td>
 	<td style='width:10%' class='fcaption'>user</td>
 	<td style='width:40%' class='fcaption'>question</td>
 	<td style='width:50%' class='fcaption'>answer(s)</td>
@@ -49,6 +50,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 		}
 
 		$text .= "<tr>
+		<td class='forumheader3'>".$row['av_aid']."</td>
 		<td class='forumheader3'>".$username."</td>
 		<td class='forumheader3'>".$question."</td>
 		<td class='forumheader3'>".$answer."</td>
