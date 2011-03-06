@@ -7,12 +7,13 @@ will not be provided.
 Once you've downloaded the files from the repo (click Downloads and then either the .tar.gz or the .zip buttons) you need to rename the directory that is inside the zipball/tarball
 to `avalanche` before placing it inside your `e107_plugins` directory. Failure to do this will result in the plugin not being recognized by the Plugin Manager.
 
-**Do not** install this plugin on a production website. Chances are there will be times when uninstalling and reinstalling the plugin will be mandatory.
-
-Finally, the plugin is not even close to finished. Many features will be lacking until the plugin goes into the beta phase. When you install this for testing you are just
+It should be noted that the plugin is not even close to finished. Many features will be lacking until the plugin goes into the beta phase. When you install this for testing you are just
 testing what is there right now. Your suggestions and feature requests are welcome, so long as they are not already planned and mentioned elsewhere. (You can still send the
 suggestions and whatnot, but don't expect a reply to them.)
 
+Finally, every commit that is made should be treated as a new plugin entirely. Because of this you should uninstall and reinstall Avalanche to ensure you get any possible
+database or preference changes. If you think this is overkill you are welcome to read the actual commits to see if database or preference changes were made. If they weren't
+you do not need to un/re-install. **This is here so I don't have to post it every single time I make a database or preference change that requires a reinstall.**
 
 # Modularity
 
