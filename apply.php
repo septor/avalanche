@@ -58,7 +58,7 @@ if(check_class($pref['avalanche_applyaccess'])){
 							if($types[$i] == "checkbox"){
 								$cbv = $_POST[$fields[$i]];
 								for($x = 0; $x < count($cbv); $x++){
-									$chkvalues .= $cbv[$x].",";
+									$chkvalues .= $cbv[$x]."//";
 								}
 								$sql3->db_Insert("avalanche_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".intval($app_id)."', '".$chkvalues."'") or die(mysql_error());
 							}else{
@@ -116,21 +116,21 @@ if(check_class($pref['avalanche_applyaccess'])){
 				$text .= "<textarea class='tbox' name='".$row['av_fieldname']."' style='width:100%; height:50px;'>".$row['av_value']."</textarea>";
 
 			}else if($row['av_type'] == "radio"){
-				$values = explode(",", $row['av_value']);
+				$values = explode("//", $row['av_value']);
 				for($i = 0; $i <= (count($values)-1); $i++){
 					$text .= "<input type='radio' name='".$row['av_fieldname']."' value='".$i."' /> ".$values[$i]." ";
 				}
 				unset($values);
 
 			}else if($row['av_type'] == "checkbox"){
-				$values = explode(",", $row['av_value']);
+				$values = explode("//", $row['av_value']);
 				for($i = 0; $i <= (count($values)-1); $i++){
 					$text .= $values[$i]." <input type='checkbox' name='".$row['av_fieldname']."[]' value='".$i."' /><br />";
 				}
 				unset($values);
 
 			}else if($row['av_type'] == "dropdown"){
-				$values = explode(",", $row['av_value']);
+				$values = explode("//", $row['av_value']);
 				$text .= "<select class='tbox' name='".$row['av_fieldname']."'>";
 				for($i = 0; $i <= (count($values)-1); $i++){
 					$text .= "<option value='".$i."'>".$values[$i]."</option>";

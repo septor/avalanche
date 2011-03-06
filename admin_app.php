@@ -138,7 +138,7 @@ $text = "<div style='text-align:center'>
 		<td class='forumheader2'><i>The question you wish to ask the applicant.</i></td>
 		<td class='forumheader2'><i>A name for the field being created. Usually a short word, lower case, without spaces.</i></td>
 		<td class='forumheader2'><i>The type of field to use. Simple questions should use text boxes, long answers should use textareas, multipe choice questions should use radio boxes or drop downs, and multiple-select choices should use checkboxes.</i></td>
-		<td class='forumheader2'><i>The value(s) inside the field types. If you select radio button, checkbox, or drop down; split your choices with a comma.</i></td>
+		<td class='forumheader2'><i>The value(s) inside the field types. If you select radio button, checkbox, or drop down; split your choices with two forward slashes (//).</i></td>
 		<td class='forumheader2'><i>Denotes whether or not the field is required.</i></td>
 	</tr>
 	<tr>
