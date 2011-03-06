@@ -20,17 +20,12 @@ if(check_class($pref['avalanche_viewaccess'])){
 		$type = provokeQuestion($row['av_qid'], "type");
 		$values = provokeQuestion($row['av_qid'], "value");
 		$user = get_user_data($row['av_uid']);
+		$values = explode("//", $values);
 
-		if($type == "radio"){
-			$values = explode("//", $values);
-			$answer = $values[$row['av_value']];
-
-		}else if($type == "dropdown"){
-			$values = explode("//", $values);
+		if($type == "radio" || $type == "dropdown"){
 			$answer = $values[$row['av_value']];
 
 		}else if($type == "checkbox"){
-			$values = explode("//", $values);
 			$checked = explode("//", $row['av_value']);
 			$answer = $values[$checked[0]];
 			for($i = 1; $i <= (count($checked)-2); $i++){
