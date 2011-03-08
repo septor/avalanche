@@ -12,7 +12,7 @@ if(isset($_POST['updatesettings'])){
 	if($_POST['avalanche_rulesrequired'] == true && $_POST['avalanche_rules'] == ""){
 		$message = "You're making applicants agree to rules you haven't even set? That's kind of dodgy! Make some rules, jerk!";
 	}else{
-		$pref['avalanche_guildname'] = $tp->toDB($_POST['avalanche_guildname']);
+		$pref['avalanche_groupname'] = $tp->toDB($_POST['avalanche_groupname']);
 		$pref['avalanche_rules'] = $tp->toDB($_POST['avalanche_rules']);
 		$pref['avalanche_rulesrequired'] = $tp->toDB($_POST['avalanche_rulesrequired']);
 		$pref['avalanche_viewaccess'] = $_POST['avalanche_viewaccess'];
@@ -36,9 +36,9 @@ $text = "
 <form method='post' action='".e_SELF."'>
 <table style='width:75%' class='fborder'>
 <tr>
-<td style='width:50%' class='forumheader3'>What is your guild's name?</td>
+<td style='width:50%' class='forumheader3'>What is your group's name?</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
-<input type='text' name='avalanche_guildname' class='tbox' value='".$pref['avalanche_guildname']."' />
+<input type='text' name='avalanche_groupname' class='tbox' value='".$pref['avalanche_groupname']."' />
 </td>
 </tr>
 <tr>
@@ -87,13 +87,13 @@ $text = "
 </td>
 </tr>
 <tr>
-<td style='width:50%' class='forumheader3'>Require applicants to agree to your guild rules before their application is submitted?</td>
+<td style='width:50%' class='forumheader3'>Require applicants to agree to your group's rules before their application is submitted?</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
 <input type='checkbox' name='avalanche_rulesrequired' value='1'".($pref['avalanche_rulesrequired'] == 1 ? " checked='checked'" : "")." />
 </td>
 </tr>
 <tr>
-<td style='width:50%' class='forumheader3'>Guild Rules:</td>
+<td style='width:50%' class='forumheader3'>Rules:</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
 <textarea class='tbox' name='avalanche_rules' style='width:90%; height:50px;'>".$pref['avalanche_rules']."</textarea>
 </td>
