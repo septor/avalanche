@@ -10,8 +10,8 @@ $sql4 = new db();
 
 if(check_class($pref['avalanche_applyaccess'])){
 
-	$ta1 = $sql4->db_Count("avalanche_request", "(*)", "WHERE av_uid='".intval(USERID)."'") or die(mysql_error());
-	$ta2 = $sql4->db_Count("avalanche_application", "(*)") or die(mysql_error());
+	$ta1 = $sql4->db_Count("avalanche_request", "(*)", "WHERE av_uid='".intval(USERID)."'");
+	$ta2 = $sql4->db_Count("avalanche_application", "(*)");
 	$times_applied = $ta1 / $ta2;
 
 	if($times_applied < $pref['avalanche_applyamount']){
@@ -20,6 +20,7 @@ if(check_class($pref['avalanche_applyaccess'])){
 		while($row3 = $sql3->db_Fetch()){
 			$app_id = $row3['av_aid'] + 1;
 		}
+		$app_id = ($app_id == 0 ? 1 : $app_id);
 
 		if(isset($_POST['apply'])){
 			$fields = array();
@@ -81,7 +82,8 @@ if(check_class($pref['avalanche_applyaccess'])){
 			$ns->tablerender("", "<div style='text-align:center'><b>".$message."</b></div>");
 		}
 
-		$sql->db_Select("avalanche_application", "*");
+
+		$sql->db_Select("avalanche_application", "*", "ORDER BY av_id ASC", "no-where");
 
 		$text = "<div style='text-align:center;'>
 		<form method='post' action='".e_SELF."'>
@@ -89,7 +91,7 @@ if(check_class($pref['avalanche_applyaccess'])){
 
 		if($pref['avalanche_rulesrequired'] == true && $pref['avalanche_rules'] != ""){
 			$text .= "<tr>
-			<td colspan='2' style='text-align:justify;'>
+			<td colspan='2' class='forumheader3'>
 			".$tp->toHTML($pref['avalanche_rules'], true)."
 			<br /><br />
 			<div style='text-align:center;'>
@@ -99,15 +101,10 @@ if(check_class($pref['avalanche_applyaccess'])){
 			</tr>";
 		}
 
-		$text .= "<tr>
-		<td style='width:50%; text-align:left;'>&nbsp;</td>
-		<td>&nbsp;</td>
-		</tr>";
-
 		while($row = $sql->db_Fetch()){
 			$text .= "<tr>
-			<td style='text-align:left;'>".($row['av_required'] == true ? ($pref['avalanche_requiredfieldtext'] == "" ? "<span style='color: #cc0000;'>*</span> " : $tp->toHTML($pref['avalanche_requiredfieldtext'])) : "").$row['av_key']."</td>
-			<td style='text-align:right;'>";
+			<td class='forumheader3' style='width:50%;'>".($row['av_required'] == true ? ($pref['avalanche_requiredfieldtext'] == "" ? "<span style='color: #cc0000;'>*</span> " : $tp->toHTML($pref['avalanche_requiredfieldtext'])) : "").$row['av_key']."</td>
+			<td class='forumheader3' style='text-align:right;'>";
 
 			if($row['av_type'] == "textbox"){
 				$text .= "<input type='text' class='tbox' name='".$row['av_fieldname']."' value='".$row['av_value']."' />";
@@ -145,7 +142,7 @@ if(check_class($pref['avalanche_applyaccess'])){
 		}
 
 		$text .= "<tr>
-		<td colspan='2'>
+		<td colspan='2' style='text-align:center;' class='forumheader3'>
 		<input type='hidden' name='rand_num' value='".$captcha->random_number."' />
 		".$captcha->r_image()."
 		<br />
@@ -153,16 +150,16 @@ if(check_class($pref['avalanche_applyaccess'])){
 		</td>
 		</tr>
 		<tr>
-		<td colspan='2'><input type='submit' class='button' name='apply' value='Submit Application' /> <input type='reset' class='button' value='Start Over' /></td>
+		<td colspan='2' style='text-align:center;' class='forumheader3'><input type='submit' class='button' name='apply' value='Submit Application' /> <input type='reset' class='button' value='Start Over' /></td>
 		</tr>
 		<tr>
-		<td colspan='2'>".($pref['avalanche_requiredfieldtext'] == "" ? "<span style='color: #cc0000;'>*</span> " : $tp->toHTML($pref['avalanche_requiredfieldtext']))." - denotes a required field.</td>
+		<td colspan='2' style='text-align:center;' class='forumheader3'>".($pref['avalanche_requiredfieldtext'] == "" ? "<span style='color: #cc0000;'>*</span> " : $tp->toHTML($pref['avalanche_requiredfieldtext']))." - denotes a required field.</td>
 		</tr>
 		</table>
 		</form>
 		</div>";
 
-		$ns->tablerender("Apply to ".$pref['avalanche_guildname'], $text);
+		$ns->tablerender("Apply to ".$pref['avalanche_groupname'], $text);
 	}else{
 		$ns->tablerender("Application Limit Met", "<div style='text-align:center'>You've already submitted the maximum amount of applications allowed.<br />
 		Will we contact you when a decision has been made regarding your application.</div>");
