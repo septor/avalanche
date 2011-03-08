@@ -50,25 +50,25 @@ $text = "
 <tr>
 <td style='width:50%' class='forumheader3'>Who can submit applications?</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
-".r_userclass('avalanche_applyaccess', $pref['avalanche_applyaccess'], 'off', 'nobody,member,admin,classes')."
+".r_userclass('avalanche_applyaccess', $pref['avalanche_applyaccess'], 'off', 'nobody,member,admin,main,classes')."
 </td>
 </tr>
 <tr>
 <td style='width:50%' class='forumheader3'>Who can view applications?</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
-".r_userclass('avalanche_viewaccess', $pref['avalanche_viewaccess'], 'off', 'nobody,member,admin,classes')."
+".r_userclass('avalanche_viewaccess', $pref['avalanche_viewaccess'], 'off', 'nobody,member,admin,main,classes')."
 </td>
 </tr>
 <tr>
 <td style='width:50%' class='forumheader3'>Who can rank and comment on applications?</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
-".r_userclass('avalanche_rankaccess', $pref['avalanche_rankaccess'], 'off', 'nobody,member,admin,classes')."
+".r_userclass('avalanche_rankaccess', $pref['avalanche_rankaccess'], 'off', 'nobody,member,admin,main,classes')."
 </td>
 </tr>
 <tr>
 <td style='width:50%' class='forumheader3'>Who can manage applications?</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
-".r_userclass('avalanche_manageaccess', $pref['avalanche_manageaccess'], 'off', 'nobody,member,admin,classes')."
+".r_userclass('avalanche_manageaccess', $pref['avalanche_manageaccess'], 'off', 'nobody,member,admin,main,classes')."
 </td>
 </tr>
 <tr>
