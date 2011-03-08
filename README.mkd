@@ -39,7 +39,6 @@ and won't be needed to run the plugin. Avalance will work just fine without any 
 
 # Upcoming Features
 
-* Application Review (listing of all applications)
 * Application Management (voting, approval of app, denial of app)
 * Module Support
 * WoW Module
@@ -52,10 +51,3 @@ and won't be needed to run the plugin. Avalance will work just fine without any 
 The following issues are already known, please do not report them:
 
 * No known issues at this time.
-
-
-# Working As Intended
-
-The follow is a list of things that are working as they are currently designed to work:
-
-* `results.php` is lacking. It is done this way because the file, in it's current form, is mainly for testing to ensure the application data being submitted is actually submitted.
