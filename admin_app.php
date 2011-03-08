@@ -105,11 +105,11 @@ $text = "<div style='text-align:center'>
 <form method='post' action='".e_SELF."'>
 <table style='width:90%' class='fborder'>
 	<tr>
-		<td class='fcaption'>Question</td>
-		<td class='fcaption'>Field Name</td>
-		<td class='fcaption'>Field Type</td>
-		<td class='fcaption'>Field Values</td>
-		<td class='fcaption'>Required</td>
+		<td style='width:10%; text-align:center;' class='fcaption'>Question</td>
+		<td style='width:15%; text-align:center;' class='fcaption'>Field Name</td>
+		<td style='width:40%; text-align:center;' class='fcaption'>Field Type</td>
+		<td style='width:20%; text-align:center;' class='fcaption'>Field Values</td>
+		<td style='width:15%; text-align:center;' class='fcaption'>Required</td>
 	</tr>
 	<tr>
 		<td class='forumheader3'>
@@ -158,28 +158,28 @@ $text2 = "<div style='text-align:center'>";
 if($sql->db_Count("avalanche_application", "(*)") == 0){
 	$text2 .= "No fields have been created at this time.";
 }else{
-	$sql->db_Select("avalanche_application", "*") or die(mysql_error());
+	$sql->db_Select("avalanche_application", "*", "ORDER BY av_id ASC", "no-where") or die(mysql_error());
 	$text2 .= "
 	<table style='width:90%' class='fborder'>
 	<tr>
-		<td class='fcaption'>ID</td>
-		<td class='fcaption'>Question</td>
-		<td class='fcaption'>Field Name</td>
-		<td class='fcaption'>Field Type</td>
-		<td class='fcaption'>Field Values</td>
-		<td class='fcaption'>Required</td>
-		<td class='fcaption'>&nbsp;</td>
+		<td style='width:4%; text-align:center;' class='fcaption'>ID</td>
+		<td style='width:20%; text-align:center;' class='fcaption'>Question</td>
+		<td style='width:15%; text-align:center;' class='fcaption'>Field Name</td>
+		<td style='width:10%; text-align:center;' class='fcaption'>Field Type</td>
+		<td style='width:36%; text-align:center;' class='fcaption'>Field Values</td>
+		<td style='width:10%; text-align:center;' class='fcaption'>Required</td>
+		<td style='width:5%; text-align:center;' class='fcaption'>&nbsp;</td>
 	</tr>";
 
 	while($row = $sql->db_Fetch()){
 		$text2 .= "
 		<tr>
-			<td class='forumheader3'>".$row['av_id']."</td>
+			<td style='text-align:center;' class='forumheader3'>".$row['av_id']."</td>
 			<td class='forumheader3'>".$row['av_key']."</td>
 			<td class='forumheader3'>".$row['av_fieldname']."</td>
 			<td class='forumheader3'>".$row['av_type']."</td>
 			<td class='forumheader3'>".$row['av_value']."</td>
-			<td class='forumheader3'>".($row['av_required'] == true ? "Yes" : "No")."</td>
+			<td style='text-align:center;' class='forumheader3'>".($row['av_required'] == true ? "Yes" : "No")."</td>
 			<td class='forumheader3' style='text-align:center;'><a href='".e_PLUGIN."avalanche/admin_app.php?edit.".$row['av_id']."'>".ADMIN_EDIT_ICON."</a> <a href='".e_PLUGIN."avalanche/admin_app.php?del.".$row['av_id']."'>".ADMIN_DELETE_ICON."</a></td>
 		</tr>";
 	}
