@@ -37,7 +37,6 @@ function hasVoted($uid, $aid){
 	}
 }
 
-
 function getVotes($aid, $type="all"){
 	$gv = new db();
 	if($type == "all"){

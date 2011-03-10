@@ -66,7 +66,7 @@ if(check_class($pref['avalanche_applyaccess'])){
 								$sql3->db_Insert("avalanche_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".intval($app_id)."', '".$tp->toDB($_POST[$fields[$i]])."', '".intval(time())."'");
 							}
 						}
-						$message = "Your application has been submitted successfully.<br />You will be contacted when a decision has been made.";
+						$message = "Your application has been submitted successfully.<br />You will be contacted by ".$pref['avalanche_replymethod']." when a decision has been made.";
 					}else{
 						$message = "Security code is incorrect!";
 					}
@@ -95,7 +95,7 @@ if(check_class($pref['avalanche_applyaccess'])){
 			".$tp->toHTML($pref['avalanche_rules'], true)."
 			<br /><br />
 			<div style='text-align:center;'>
-			Do you accept these rules? <input type='checkbox' name='acceptrules' value='1' />
+			<b>Do you accept these rules?</b> <input type='checkbox' name='acceptrules' value='1' />
 			</div>
 			</td>
 			</tr>";
@@ -161,8 +161,8 @@ if(check_class($pref['avalanche_applyaccess'])){
 
 		$ns->tablerender("Apply to ".$pref['avalanche_groupname'], $text);
 	}else{
-		$ns->tablerender("Application Limit Met", "<div style='text-align:center'>You've already submitted the maximum amount of applications allowed.<br />
-		Will we contact you when a decision has been made regarding your application.</div>");
+		$ns->tablerender("Application Limit Met", "You've already submitted the maximum amount of applications allowed.<br />
+		Will we contact you when a decision has been made regarding your application.");
 	}
 }else{
 	$ns->tablerender("Access Denied! :D", "You do not have the correct access to view this page.");

@@ -8,7 +8,7 @@ require_once(e_ADMIN."auth.php");
 
 if(isset($_POST['create'])){
 	if(isset($_POST['key']) && $_POST['fieldname']){
-		$sql->db_Insert("avalanche_application", "'', '".$tp->toDB($_POST['key'])."', '".$tp->toDB($_POST['fieldname'])."', '".$_POST['type']."', '".$tp->toDB($_POST['value'])."', '".$tp->toDB($_POST['required'])."'") or die(mysql_error());
+		$sql->db_Insert("avalanche_application", "'', '".$tp->toDB($_POST['key'])."', '".$tp->toDB($_POST['fieldname'])."', '".$tp->toDB($_POST['type'])."', '".$tp->toDB($_POST['value'])."', '".$tp->toDB($_POST['required'])."'");
 		$message = "Your field has been created successfully!";
 	}else{
 		$message = "You need to define a question and a fieldname in order for your field to be created.";
@@ -26,8 +26,9 @@ if(isset($_POST['confirmdelete'])){
 	$sql->db_Delete("avalanche_application", "av_id='".intval($_POST['id'])."'");
 	$message = "You have successfully deleted field #".$_POST['id']."!";
 }
+
 if(isset($_POST['updatefield'])){
-	$sql->db_Update("avalanche_application", "av_key='".$tp->toDB($_POST['newkey'])."', av_fieldname='".$tp->toDB($_POST['newfieldname'])."', av_type='".$tp->toDB($_POST['newtype'])."', av_value='".$tp->toDB($_POST['newvalue'])."', av_required='".$tp->toDB($_POST['newrequired'])."'  WHERE av_id='".intval($_POST['id'])."'");
+	$sql->db_Update("avalanche_application", "av_key='".$tp->toDB($_POST['newkey'])."', av_fieldname='".$tp->toDB($_POST['newfieldname'])."', av_type='".$tp->toDB($_POST['newtype'])."', av_value='".$tp->toDB($_POST['newvalue'])."', av_required='".$tp->toDB($_POST['newrequired'])."' WHERE av_id='".intval($_POST['id'])."'");
 	$message = "Your field has been updated successfully!";
 }
 
@@ -36,8 +37,8 @@ if($action == "del"){
 	$toptext = "
 	<form method='post' action='".e_SELF."'>
 	Really delete field #".$id."?<br />
-	<input type='submit' class='button' name='confirmdelete' value='Yes'> <input type='submit' class='button' value='No'>
-	<input type='hidden' name='id' value='".$id."'>
+	<input type='submit' class='button' name='confirmdelete' value='Yes' /> <input type='submit' class='button' value='No' />
+	<input type='hidden' name='id' value='".$id."' />
 	</form>";
 }
 
@@ -51,8 +52,7 @@ if($action == "edit"){
 		$newvalue = $row2['av_value'];
 		$newrequired = $row2['av_required'];
 	}
-	$toptext = "
-	<form method='post' action='".e_SELF."'>
+	$toptext = "<form method='post' action='".e_SELF."'>
 	<table style='width:40%' class='fborder'>
 	<tr>
 	<td class='fcaption' colspan='2'>
@@ -82,7 +82,7 @@ if($action == "edit"){
 	<td class='forumheader3'><input type='text' name='newvalue' class='tbox' value='".$newvalue."' /></td>
 	</tr>
 	<td style='text-align:right;' class='forumheader3'>Required?:</td>
-	<td class='forumheader3'><input type='checkbox' name='newrequired' value='1' ".($newrequired == true ? " checked" : "")." /></td>
+	<td class='forumheader3'><input type='checkbox' name='newrequired' value='1'".($newrequired == true ? " checked" : "")." /></td>
 	</tr>
 	<tr>
 	<td colspan='2' class='forumheader3' style='text-align:center;'>
@@ -158,7 +158,7 @@ $text2 = "<div style='text-align:center'>";
 if($sql->db_Count("avalanche_application", "(*)") == 0){
 	$text2 .= "No fields have been created at this time.";
 }else{
-	$sql->db_Select("avalanche_application", "*", "ORDER BY av_id ASC", "no-where") or die(mysql_error());
+	$sql->db_Select("avalanche_application", "*", "ORDER BY av_id ASC", "no-where");
 	$text2 .= "
 	<table style='width:90%' class='fborder'>
 	<tr>
@@ -192,5 +192,4 @@ $text2 .= "</div>";
 $ns->tablerender("Configure Avalanche: Created Fields", $text2);
 
 require_once(e_ADMIN."footer.php");
-
 ?>
