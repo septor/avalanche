@@ -16,8 +16,12 @@ if(check_class($pref['avalanche_viewaccess'])){
 
 	if(isset($_POST['submitvote'])){
 		if($_POST['vote'] != "" && $_POST['comment'] != ""){
-			$sql->db_Insert("avalanche_comment", "'', '".intval(USERID)."', '".intval($_POST['aid'])."', '".$tp->toDB($_POST['comment'])."', '".intval($_POST['vote'])."', '".intval(time())."'");
-			$message = "Your vote and comment have been submitted for application #".$_POST['aid']."!";
+			if(hasVoted(USERID, $_POST['aid']) == false){
+				$sql->db_Insert("avalanche_comment", "'', '".intval(USERID)."', '".intval($_POST['aid'])."', '".$tp->toDB($_POST['comment'])."', '".intval($_POST['vote'])."', '".intval(time())."'");
+				$message = "Your vote and comment have been submitted for application #".$_POST['aid']."!";
+			}else{
+				$message = "You have already voted on this application.";
+			}
 		}else{
 			$message = "You must place your vote and submit a comment regarding your decision.";
 		}
@@ -29,6 +33,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 	//$denyimage = (file_exists(THEME."images/avalanche/deny.png") ? THEME."images/avalanche/deny.png" : e_PLUGIN."avalanche/images/deny.png");
 	$yesimage = (file_exists(THEME."images/avalanche/yes.png") ? THEME."images/avalanche/yes.png" : e_PLUGIN."avalanche/images/yes.png");
 	$noimage = (file_exists(THEME."images/avalanche/no.png") ? THEME."images/avalanche/no.png" : e_PLUGIN."avalanche/images/no.png");
+	$newimage = (file_exists(THEME."images/avalanche/new.png") ? THEME."images/avalanche/new.png" : e_PLUGIN."avalanche/images/new.png");
 
 	if (isset($message)) {
 		$ns->tablerender("", "<div style='text-align:center'><b>".$message."</b></div>");
@@ -73,8 +78,8 @@ if(check_class($pref['avalanche_viewaccess'])){
 		$text .= "</table>
 		<br /><br />";
 		if(hasVoted(USERID, $id)){
-			$yeswhat = (getVotes($id, "yes") > 1 ? "people think" : "person thinks");
-			$nowhat = (getVotes($id, "no") > 1 ? "people think" : "person thinks");
+			$yeswhat = (getVotes($id, "yes") == 1 ? "person thinks" : "people think");
+			$nowhat = (getVotes($id, "no") == 1 ? "person thinks" : "people think");
 
 			$text .= "<table style='width:90%' class='fborder'>
 			<tr>
@@ -93,7 +98,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 				<tr>
 				<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? "<img src='".$noimage."' />" : "<img src='".$yesimage."' />")."</td>
 				<td style='width:15%;' class='forumheader3'>
-				<a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$cmtusr["user_name"]."</a><br />Total Votes: ".getUservotes($row2['av_uid'])."<br /></td>
+				<a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$cmtusr["user_name"]."</a><br />Total Votes: ".getUservotes($row2['av_uid'])."</td>
 				<td style='width:80%; vertical-align:top;' class='forumheader3'>".$row2['av_comment']."</td>
 				</tr>";
 			}
@@ -148,17 +153,15 @@ if(check_class($pref['avalanche_viewaccess'])){
 			$sql2->db_Select("avalanche_request", "*", "av_aid='".intval($aids[$i])."' LIMIT 1");
 			while($row2 = $sql2->db_Fetch()){
 				$user = get_user_data($row2['av_uid']);
-
 				$text .= "<tr>
-				<td style='text-align:center;' class='forumheader3'>".$aids[$i]."</td>
+				<td style='text-align:center;' class='forumheader3'>".(hasVoted(USERID, $row2['av_aid']) == false ? "<img src='".$newimage."' /> " : "").$aids[$i]."</td>
 				<td style='text-align:center;' class='forumheader3'><a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$user["user_name"]."</a></td>
-				<td style='text-align:center;' class='forumheader3'>".$gen->convert_date($row2['av_timestamp'])."</td>
+				<td style='text-align:center;' class='forumheader3'>".$gen->convert_date($row2['av_datestamp'])."</td>
 				<td style='text-align:center;' class='forumheader3'>".getVotes($row2['av_aid'])."</td>
-				<td style='text-align:center;' class='forumheader3'><a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i]."'><img src='".$viewimage."' / title='View This Application'></a>";
-				$text .= "</td></tr>";
-
+				<td style='text-align:center;' class='forumheader3'><a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i]."'><img src='".$viewimage."' title='View This Application' /></a>
+				</td>
+				</tr>";
 			}
-
 		}
 
 		$text .= "</table>";
