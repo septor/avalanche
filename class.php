@@ -28,36 +28,31 @@ function getUserid($aid){
 	return $userid;
 }
 
-function getReplies($aid){
-	global $pref;
-	$grp = new db();
-	$fields = explode("//", $pref['avalanche_reviewdisplay']);
-	$qs = "";
-	for($i = 0; $i <= (count($fields)-2); $i++){
-		$values = explode("//", a_Info($fields[$i], "value"));
-		$type = a_Info($fields[$i], "type");
-		$grp->db_Select("avalanche_request", "*", "av_aid='".intval($aid)."' AND av_qid='".intval($fields[$i])."'");
-		while($row = $grp->db_Fetch()){
-			if($type == "radio" || $type == "dropdown"){
-				$add = $values[$row['av_value']]."//";
-			}else if($type == "checkbox"){
-				$checked = explode("//", $row['av_value']);
-				$add = $values[$checked[0]];
-				for($i = 1; $i <= (count($checked)-2); $i++){
-					$add .= ", ".$values[$checked[$i]];
-				}
-				$add .= "//";
-			}else{
-				$add = $row['av_value']."//";
-			}
-		}
-		$qs .= $add;
-	}
-	if($qs != ""){
-		return substr($qs, 0, -2);
+function hasVoted($uid, $aid){
+	$hv = new db();
+	if($hv->db_Count("avalanche_comment", "(*)", "WHERE av_uid='".intval($uid)."' AND av_aid='".intval($aid)."'") > 0){
+		return true;
 	}else{
-		return "No replies.";
+		return false;
 	}
+}
+
+
+function getVotes($aid, $type="all"){
+	$gv = new db();
+	if($type == "all"){
+		$votes = $gv->db_Count("avalanche_comment", "(*)", "WHERE av_aid='".intval($aid)."'");
+	}else if($type == "yes"){
+		$votes = $gv->db_Count("avalanche_comment", "(*)", "WHERE av_aid='".intval($aid)."' AND av_vote='1'");
+	}else if($type == "no"){
+		$votes = $gv->db_Count("avalanche_comment", "(*)", "WHERE av_aid='".intval($aid)."' AND av_vote='0'");
+	}
+	return $votes;
+}
+
+function getUserVotes($uid){
+	$uv = new db();
+	return $uv->db_Count("avalanche_comment", "(*)", "WHERE av_uid='".intval($uid)."'");
 }
 
 ?>

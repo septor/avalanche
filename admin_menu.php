@@ -10,10 +10,6 @@ $butname[]  = "Application Setup";
 $butlink[]  = "admin_app.php";
 $butid[]    = "application";
 
-$butname[]  = "Review Display";
-$butlink[]  = "admin_review.php";
-$butid[]    = "review";
-
 global $pageid;
 for ($i=0; $i<count($butname); $i++) {
 	$var[$butid[$i]]['text'] = $butname[$i];

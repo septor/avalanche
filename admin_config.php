@@ -11,6 +11,8 @@ require_once(e_ADMIN."auth.php");
 if(isset($_POST['updatesettings'])){
 	if($_POST['avalanche_rulesrequired'] == true && $_POST['avalanche_rules'] == ""){
 		$message = "You're making applicants agree to rules you haven't even set? That's kind of dodgy! Make some rules, jerk!";
+	}else if($_POST['avalanche_voteyes'] == "" || $_POST['avalanche_voteno'] == ""){
+		$message = "You must choose two vote colors.";
 	}else{
 		$pref['avalanche_groupname'] = $tp->toDB($_POST['avalanche_groupname']);
 		$pref['avalanche_rules'] = $tp->toDB($_POST['avalanche_rules']);
@@ -22,6 +24,7 @@ if(isset($_POST['updatesettings'])){
 		$pref['avalanche_replymethod'] = $tp->toDB($_POST['avalanche_replymethod']);
 		$pref['avalanche_requiredfieldtext'] = $tp->toDB($_POST['avalanche_requiredfieldtext']);
 		$pref['avalanche_applyamount'] = $tp->toDB($_POST['avalanche_applyamount']);
+		$pref['avalanche_votecolors'] = $tp->toDB($_POST['avalanche_voteyes'].",".$_POST['avalanche_voteno']);
 		save_prefs();
 		$message = "Settings saved successfully!";
 	}
@@ -30,6 +33,8 @@ if(isset($_POST['updatesettings'])){
 if (isset($message)) {
 	$ns->tablerender("", "<div style='text-align:center'><b>".$message."</b></div>");
 }
+
+$votecolor = explode(",", $pref['avalanche_votecolors']);
 
 $text = "
 <div style='text-align:center'>
@@ -60,15 +65,22 @@ $text = "
 </td>
 </tr>
 <tr>
-<td style='width:50%' class='forumheader3'>Who can rank and comment on applications?</td>
+<td style='width:50%' class='forumheader3'>Who can vote and comment on applications?</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
 ".r_userclass('avalanche_rankaccess', $pref['avalanche_rankaccess'], 'off', 'nobody,member,admin,main,classes')."
 </td>
 </tr>
 <tr>
-<td style='width:50%' class='forumheader3'>Who can manage applications?</td>
+<td style='width:50%' class='forumheader3'>Who can approve, deny, and delete applications?</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
 ".r_userclass('avalanche_manageaccess', $pref['avalanche_manageaccess'], 'off', 'nobody,member,admin,main,classes')."
+</td>
+</tr>
+<tr>
+<td style='width:50%' class='forumheader3'>Vote Colors:<br /><i>HTML color codes only.</i></td>
+<td style='width:50%; text-align:right' class='forumheader3'>
+Yes: <input type='text' name='avalanche_voteyes' class='tbox' value='".$votecolor[0]."' /><br /><br />
+No: <input type='text' name='avalanche_voteno' class='tbox' value='".$votecolor[1]."' />
 </td>
 </tr>
 <tr>
@@ -87,15 +99,10 @@ $text = "
 </td>
 </tr>
 <tr>
-<td style='width:50%' class='forumheader3'>Require applicants to agree to your group's rules before their application is submitted?</td>
-<td style='width:50%; text-align:right' class='forumheader3'>
-<input type='checkbox' name='avalanche_rulesrequired' value='1'".($pref['avalanche_rulesrequired'] == 1 ? " checked='checked'" : "")." />
-</td>
-</tr>
-<tr>
-<td style='width:50%' class='forumheader3'>Rules:</td>
-<td style='width:50%; text-align:right' class='forumheader3'>
-<textarea class='tbox' name='avalanche_rules' style='width:90%; height:50px;'>".$pref['avalanche_rules']."</textarea>
+<td style='width:50%' class='forumheader3'>Rules & Regulations:</td>
+<td style='width:50%; text-align:center' class='forumheader3'>
+<textarea class='tbox' name='avalanche_rules' style='width:90%; height:50px;'>".$pref['avalanche_rules']."</textarea><br />
+Force applicants to agree to these rules?: <input type='checkbox' name='avalanche_rulesrequired' value='1'".($pref['avalanche_rulesrequired'] == 1 ? " checked='checked'" : "")." />
 </td>
 </tr>
 <tr>

@@ -61,9 +61,9 @@ if(check_class($pref['avalanche_applyaccess'])){
 								for($x = 0; $x < count($cbv); $x++){
 									$chkvalues .= $cbv[$x]."//";
 								}
-								$sql3->db_Insert("avalanche_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".intval($app_id)."', '".$chkvalues."'") or die(mysql_error());
+								$sql3->db_Insert("avalanche_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".intval($app_id)."', '".$chkvalues."', '".intval(time())."'");
 							}else{
-								$sql3->db_Insert("avalanche_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".intval($app_id)."', '".$tp->toDB($_POST[$fields[$i]])."'") or die(mysql_error());
+								$sql3->db_Insert("avalanche_request", "'', '".intval(USERID)."', '".intval($i+1)."', '".intval($app_id)."', '".$tp->toDB($_POST[$fields[$i]])."', '".intval(time())."'");
 							}
 						}
 						$message = "Your application has been submitted successfully.<br />You will be contacted when a decision has been made.";
