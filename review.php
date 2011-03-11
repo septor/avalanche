@@ -10,9 +10,12 @@ if(check_class($pref['avalanche_viewaccess'])){
 		$tmp = explode(".", e_QUERY);
 		$action = $tmp[0];
 		$id = $tmp[1];
+		$subaction = $tmp[2];
+		$subid = $tmp[3];
 		unset($tmp);
 	}
 	$gen = new convert();
+	$sql3 = new db();
 
 	if(isset($_POST['submitvote'])){
 		if($_POST['vote'] != "" && $_POST['comment'] != ""){
@@ -27,19 +30,51 @@ if(check_class($pref['avalanche_viewaccess'])){
 		}
 	}
 
+	if(isset($_POST['updatecomment'])){
+		if($pref['avalanche_votecommentediting'] == 1){
+			$sql3->db_Update("avalanche_comment", "av_comment='".$tp->toDB($_POST['editcomment'])."' WHERE av_id='".intval($_POST['cid'])."'");
+			$message = "You have updated your comment!";
+		}
+	}
+
+	$newimage = (file_exists(THEME."images/avalanche/new.png") ? THEME."images/avalanche/new.png" : e_PLUGIN."avalanche/images/new.png");
 	$viewimage = (file_exists(THEME."images/avalanche/view.png") ? THEME."images/avalanche/view.png" : e_PLUGIN."avalanche/images/view.png");
 	//$deleteimage = (file_exists(THEME."images/avalanche/delete.png") ? THEME."images/avalanche/delete.png" : e_PLUGIN."avalanche/images/delete.png");
 	//$acceptimage = (file_exists(THEME."images/avalanche/accept.png") ? THEME."images/avalanche/accept.png" : e_PLUGIN."avalanche/images/accept.png");
 	//$denyimage = (file_exists(THEME."images/avalanche/deny.png") ? THEME."images/avalanche/deny.png" : e_PLUGIN."avalanche/images/deny.png");
 	$yesimage = (file_exists(THEME."images/avalanche/yes.png") ? THEME."images/avalanche/yes.png" : e_PLUGIN."avalanche/images/yes.png");
 	$noimage = (file_exists(THEME."images/avalanche/no.png") ? THEME."images/avalanche/no.png" : e_PLUGIN."avalanche/images/no.png");
-	$newimage = (file_exists(THEME."images/avalanche/new.png") ? THEME."images/avalanche/new.png" : e_PLUGIN."avalanche/images/new.png");
+	$editimage = (file_exists(THEME."images/avalanche/edit.png") ? THEME."images/avalanche/edit.png" : e_PLUGIN."avalanche/images/edit.png");
 
 	if (isset($message)) {
 		$ns->tablerender("", "<div style='text-align:center'><b>".$message."</b></div>");
 	}
 
 	if($action == "id"){
+
+		if($subaction == "edit"){
+
+			$sql3->db_Select("avalanche_comment", "*", "av_id='".intval($subid)."'");
+			while($row3 = $sql3->db_Fetch()){
+				$comment = $row3['av_comment'];
+			}
+			$sat = "<form method='post' action='".e_SELF."?id.".$id."'>
+			<table style='width:50%' class='fborder'>
+			<tr>
+			<td style='text-align:center;'><textarea class='tbox' name='editcomment' style='width:80%; height:50px;'>".$comment."</textarea></td>
+			</tr>
+			<tr>
+			<td style='text-align:center;'>
+			<input type='hidden' name='cid' value='".$subid."' />
+			<input type='submit' class='button' name='updatecomment' value='Update Commment'>
+			</td>
+			</tr>
+			</table>
+			</form>";
+
+			$ns->tablerender("Modify Comment", "<div style='text-align:center'><b>".$sat."</b></div>");
+		}
+
 
 		$user = get_user_data(getUserid($id));
 		$votecolor = explode(",", $pref['avalanche_votecolors']);
@@ -94,18 +129,23 @@ if(check_class($pref['avalanche_viewaccess'])){
 			$sql2->db_Select("avalanche_comment", "*", "av_aid='".intval($id)."'");
 			while($row2 = $sql2->db_Fetch()){
 				$cmtusr = get_user_data($row2['av_uid']);
+				if($pref['avalanche_votecommentediting'] == 1 && USERID == $row2['av_uid']){
+					$editblock = "<div style='float:right;'><a href='".e_SELF."?id.".$id.".edit.".$row2['av_id']."'><img src='".$editimage."' /></a></div>";
+				}else{
+					$editblock = "";
+				}
 				$text .= "
 				<tr>
 				<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? "<img src='".$noimage."' />" : "<img src='".$yesimage."' />")."</td>
 				<td style='width:15%;' class='forumheader3'>
 				<a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$cmtusr["user_name"]."</a><br />Total Votes: ".getUservotes($row2['av_uid'])."</td>
-				<td style='width:80%; vertical-align:top;' class='forumheader3'>".$row2['av_comment']."</td>
+				<td style='width:80%; vertical-align:top;' class='forumheader3'>".$tp->toHTML($row2['av_comment']).$editblock."</td>
 				</tr>";
 			}
 			$text .= "</table>";
 
 		}else{
-			$text .= "<form method='post' action='".e_SELF."'>
+			$text .= "<form method='post' action='".e_SELF."?id.".$id."'>
 			<table style='width:90%' class='fborder'>
 			<tr>
 			<td colspan='2' class='fcaption'>Vote & Comment</td>
@@ -116,7 +156,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 			</tr>
 			<tr>
 			<td style='width:50%;' class='forumheader3'>Comment:</td>
-			<td style='text-align:center; width:50%;' class='forumheader3'><textarea class='tbox' name='comment' style='width:100%; height:50px;'></textarea></td>
+			<td style='text-align:center; width:50%;' class='forumheader3'><textarea class='tbox' name='comment' style='width:80%; height:50px;'></textarea></td>
 			</tr>
 			<tr>
 			<td colspan='2' style='text-align:center;' class='forumheader3'>

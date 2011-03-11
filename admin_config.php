@@ -25,6 +25,7 @@ if(isset($_POST['updatesettings'])){
 		$pref['avalanche_requiredfieldtext'] = $tp->toDB($_POST['avalanche_requiredfieldtext']);
 		$pref['avalanche_applyamount'] = $tp->toDB($_POST['avalanche_applyamount']);
 		$pref['avalanche_votecolors'] = $tp->toDB($_POST['avalanche_voteyes'].",".$_POST['avalanche_voteno']);
+		$pref['avalanche_votecommentediting'] = $tp->toDB($_POST['avalanche_votecommentediting']);
 		save_prefs();
 		$message = "Settings saved successfully!";
 	}
@@ -81,6 +82,12 @@ $text = "
 <td style='width:50%; text-align:right' class='forumheader3'>
 Yes: <input type='text' name='avalanche_voteyes' class='tbox' value='".$votecolor[0]."' /><br /><br />
 No: <input type='text' name='avalanche_voteno' class='tbox' value='".$votecolor[1]."' />
+</td>
+</tr>
+<tr>
+<td style='width:50%' class='forumheader3'>Allow users to edit their comments after they vote?:</td>
+<td style='width:50%; text-align:right' class='forumheader3'>
+<input type='checkbox' name='avalanche_votecommentediting' value='1'".($pref['avalanche_votecommentediting'] == 1 ? " checked='checked'" : "")." />
 </td>
 </tr>
 <tr>
