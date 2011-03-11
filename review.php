@@ -37,9 +37,15 @@ if(check_class($pref['avalanche_viewaccess'])){
 		}
 	}
 
+	if(isset($_POST['deleteapp'])){
+		$sql->db_Delete("avalanche_request", "av_aid='".intval($_POST['aid'])."'");
+		$sql->db_Delete("avalanche_comment", "av_aid='".intval($_POST['aid'])."'");
+		$message = "Application #".$_POST['aid']." deleted!";
+	}
+
 	$newimage = (file_exists(THEME."images/avalanche/new.png") ? THEME."images/avalanche/new.png" : e_PLUGIN."avalanche/images/new.png");
 	$viewimage = (file_exists(THEME."images/avalanche/view.png") ? THEME."images/avalanche/view.png" : e_PLUGIN."avalanche/images/view.png");
-	//$deleteimage = (file_exists(THEME."images/avalanche/delete.png") ? THEME."images/avalanche/delete.png" : e_PLUGIN."avalanche/images/delete.png");
+	$deleteimage = (file_exists(THEME."images/avalanche/delete.png") ? THEME."images/avalanche/delete.png" : e_PLUGIN."avalanche/images/delete.png");
 	//$acceptimage = (file_exists(THEME."images/avalanche/accept.png") ? THEME."images/avalanche/accept.png" : e_PLUGIN."avalanche/images/accept.png");
 	//$denyimage = (file_exists(THEME."images/avalanche/deny.png") ? THEME."images/avalanche/deny.png" : e_PLUGIN."avalanche/images/deny.png");
 	$yesimage = (file_exists(THEME."images/avalanche/yes.png") ? THEME."images/avalanche/yes.png" : e_PLUGIN."avalanche/images/yes.png");
@@ -58,7 +64,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 			while($row3 = $sql3->db_Fetch()){
 				$comment = $row3['av_comment'];
 			}
-			$sat = "<form method='post' action='".e_SELF."?id.".$id."'>
+			$satext = "<form method='post' action='".e_SELF."?id.".$id."'>
 			<table style='width:50%' class='fborder'>
 			<tr>
 			<td style='text-align:center;'><textarea class='tbox' name='editcomment' style='width:80%; height:50px;'>".$comment."</textarea></td>
@@ -72,7 +78,13 @@ if(check_class($pref['avalanche_viewaccess'])){
 			</table>
 			</form>";
 
-			$ns->tablerender("Modify Comment", "<div style='text-align:center'><b>".$sat."</b></div>");
+			$ns->tablerender("Modify Comment", "<div style='text-align:center'><b>".$satext."</b></div>");
+		}else if($subaction = "delete"){
+			$satext = "<form method='post' action='".e_SELF."'>
+			<input type='submit' class='button' name='deleteapp' value='Yes!' /> <input type='button' class='button' value='No!' />
+			<input type='hidden' name='aid' value='".$id."' />
+			</form>";
+			$ns->tablerender("Delete the below application?", "<div style='text-align:center'><b>".$satext."</b></div>");
 		}
 
 
@@ -194,12 +206,15 @@ if(check_class($pref['avalanche_viewaccess'])){
 			while($row2 = $sql2->db_Fetch()){
 				$user = get_user_data($row2['av_uid']);
 				$text .= "<tr>
-				<td style='text-align:center;' class='forumheader3'>".(hasVoted(USERID, $row2['av_aid']) == false ? "<img src='".$newimage."' /> " : "").$aids[$i]."</td>
+				<td style='text-align:center;' class='forumheader3'>".(hasVoted(USERID, $row2['av_aid']) == false ? "<img src='".$newimage."' title='This application is new to you!' /> " : "").$aids[$i]."</td>
 				<td style='text-align:center;' class='forumheader3'><a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$user["user_name"]."</a></td>
 				<td style='text-align:center;' class='forumheader3'>".$gen->convert_date($row2['av_datestamp'])."</td>
 				<td style='text-align:center;' class='forumheader3'>".getVotes($row2['av_aid'])."</td>
-				<td style='text-align:center;' class='forumheader3'><a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i]."'><img src='".$viewimage."' title='View This Application' /></a>
-				</td>
+				<td style='text-align:center;' class='forumheader3'><a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i]."'><img src='".$viewimage."' title='View this application!' /></a>";
+				if(check_class($pref['avalanche_manageaccess'])){
+					$text .= " <a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i].".delete'><img src='".$deleteimage."' title='Delete this application!' /></a>";
+				}
+				$text .= "</td>
 				</tr>";
 			}
 		}
