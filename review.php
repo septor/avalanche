@@ -66,7 +66,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 			<tr>
 			<td style='text-align:center;'>
 			<input type='hidden' name='cid' value='".$subid."' />
-			<input type='submit' class='button' name='updatecomment' value='Update Commment'>
+			<input type='submit' class='button' name='updatecomment' value='Update Comment'>
 			</td>
 			</tr>
 			</table>
