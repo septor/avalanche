@@ -37,7 +37,7 @@ $eplug_caption    = "Configure Avalanche";
 $eplug_prefs = array(
 	"avalanche_groupname" => "",
 	"avalanche_rules" => "",
-	"avalanche_rulesrequired" => "1",
+	"avalanche_rulesrequired" => "0",
 	"avalanche_applyaccess" => "",
 	"avalanche_viewaccess" => "",
 	"avalanche_rankaccess" => "",
@@ -45,12 +45,13 @@ $eplug_prefs = array(
 	"avalanche_replymethod" => "pm",
 	"avalanche_requiredfieldtext" => "<span style='color: #cc0000;'>*</span> ",
 	"avalanche_applyamount" => "1",
-	"avalanche_votecolors" => "#00bf00,#bf0000"
+	"avalanche_votecolors" => "#00bf00,#bf0000",
+	"avalanche_votecommentediting" => "0"
 );
 
 //MYSQL TABLES TO BE CREATED---------------------------------------------------------------------------------+
 
-$eplug_table_names = array("avalanche_application", "avalanche_request", "avalanche_comment");
+$eplug_table_names = array("avalanche_application", "avalanche_request", "avalanche_comment", "avalanche_discuss");
 
 //MYSQL TABLE STRUCTURE--------------------------------------------------------------------------------------+
 
@@ -81,6 +82,15 @@ $eplug_tables = array(
 		av_aid int(10) unsigned NOT NULL,
 		av_comment text NOT NULL,
 		av_vote int(10) unsigned NOT NULL,
+		av_datestamp int(10) unsigned NOT NULL,
+		PRIMARY KEY  (av_id)
+	) TYPE=MyISAM AUTO_INCREMENT=1;",
+
+	"CREATE TABLE ".MPREFIX."avalanche_discuss (
+		av_id int(10) unsigned NOT NULL auto_increment,
+		av_aid int(10) unsigned NOT NULL,
+		av_uid int(10) unsigned NOT NULL,
+		av_comment text NOT NULL,
 		av_datestamp int(10) unsigned NOT NULL,
 		PRIMARY KEY  (av_id)
 	) TYPE=MyISAM AUTO_INCREMENT=1;"
