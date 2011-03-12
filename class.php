@@ -55,8 +55,18 @@ function getUserVotes($uid){
 }
 
 function sendpm($to, $from, $subject, $message){
+	global $tp;
 	$spm = new db();
 	return $spm->db_Insert("private_msg", "0, '".intval($to)."', '".intval($from)."', '".intval(time())."', '0', '".$tp->toDB($subject)."', '".$tp->toDB($message)."', '1', '0', '', '', '".intval(strlen($message))."'");
+}
+
+function getStatus($aid){
+	$cs = new db();
+	$cs->db_Select("avalanche_request", "*", "av_aid='".intval($aid)."' LIMIT 1");
+	while($row = $cs->db_Fetch()){
+		$status = $row['av_status'];
+	}
+	return $status;
 }
 
 ?>

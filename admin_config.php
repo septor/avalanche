@@ -21,11 +21,14 @@ if(isset($_POST['updatesettings'])){
 		$pref['avalanche_rankaccess'] = $_POST['avalanche_rankaccess'];
 		$pref['avalanche_manageaccess'] = $_POST['avalanche_manageaccess'];
 		$pref['avalanche_applyaccess'] = $_POST['avalanche_applyaccess'];
-		$pref['avalanche_replymethod'] = $tp->toDB($_POST['avalanche_replymethod']);
 		$pref['avalanche_requiredfieldtext'] = $tp->toDB($_POST['avalanche_requiredfieldtext']);
 		$pref['avalanche_applyamount'] = $tp->toDB($_POST['avalanche_applyamount']);
 		$pref['avalanche_votecolors'] = $tp->toDB($_POST['avalanche_voteyes'].",".$_POST['avalanche_voteno']);
 		$pref['avalanche_votecommentediting'] = $tp->toDB($_POST['avalanche_votecommentediting']);
+		$pref['avalanche_acceptsubject'] = $tp->toDB($_POST['avalanche_acceptsubject']);
+		$pref['avalanche_acceptmessage'] = $tp->toDB($_POST['avalanche_acceptmessage']);
+		$pref['avalanche_denysubject'] = $tp->toDB($_POST['avalanche_denysubject']);
+		$pref['avalanche_denymessage'] = $tp->toDB($_POST['avalanche_denymessage']);
 		save_prefs();
 		$message = "Settings saved successfully!";
 	}
@@ -45,6 +48,13 @@ $text = "
 <td style='width:50%' class='forumheader3'>What is your group's name?</td>
 <td style='width:50%; text-align:right' class='forumheader3'>
 <input type='text' name='avalanche_groupname' class='tbox' value='".$pref['avalanche_groupname']."' />
+</td>
+</tr>
+<tr>
+<td style='width:50%' class='forumheader3'>Rules & Regulations:</td>
+<td style='width:50%; text-align:center' class='forumheader3'>
+<textarea class='tbox' name='avalanche_rules' style='width:90%; height:80px;'>".$pref['avalanche_rules']."</textarea><br />
+Force applicants to agree to these rules?: <input type='checkbox' name='avalanche_rulesrequired' value='1'".($pref['avalanche_rulesrequired'] == 1 ? " checked='checked'" : "")." />
 </td>
 </tr>
 <tr>
@@ -91,25 +101,39 @@ No: <input type='text' name='avalanche_voteno' class='tbox' value='".$votecolor[
 </td>
 </tr>
 <tr>
-<td style='width:50%' class='forumheader3'>Reply method used when contacting applicants regarding their acceptance or denial:</td>
-<td style='width:50%; text-align:right' class='forumheader3'>
-<select name='avalanche_replymethod' class='tbox'>
-<option value='pm'".($pref['avalanche_replymethod'] == "pm" ? " selected" : "").">PM</option>
-<option value='email'".($pref['avalanche_replymethod'] == "email" ? " selected" : "").">Email</option>
-</select>
-</td>
-</tr>
-<tr>
 <td style='width:50%' class='forumheader3'>Character, image, or text to place before a requied field on the application:<br /><i>Image tags are <b>not</b> inserted!</i></td>
 <td style='width:50%; text-align:right' class='forumheader3'>
 <input type='text' name='avalanche_requiredfieldtext' class='tbox' value='".$pref['avalanche_requiredfieldtext']."' />
 </td>
 </tr>
 <tr>
-<td style='width:50%' class='forumheader3'>Rules & Regulations:</td>
-<td style='width:50%; text-align:center' class='forumheader3'>
-<textarea class='tbox' name='avalanche_rules' style='width:90%; height:50px;'>".$pref['avalanche_rules']."</textarea><br />
-Force applicants to agree to these rules?: <input type='checkbox' name='avalanche_rulesrequired' value='1'".($pref['avalanche_rulesrequired'] == 1 ? " checked='checked'" : "")." />
+<td style='width:50%' class='forumheader3'>Application accepted message:<br /><i>{GROUPNAME} will be replaced with your group's name.</i></td>
+<td style='width:50%; text-align:right' class='forumheader3'>
+<table style='width:100%;'>
+<tr>
+<td style='width:20%; text-align:right;'>Subject:</td>
+<td><input type='text' name='avalanche_acceptsubject' style='width:91%;' class='tbox' value='".$pref['avalanche_acceptsubject']."' /></td>
+</tr>
+<tr>
+<td style='width:20%; text-align:right;'>Body:</td>
+<td><textarea class='tbox' name='avalanche_acceptmessage' style='width:90%; height:80px;'>".$pref['avalanche_acceptmessage']."</textarea></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td style='width:50%' class='forumheader3'>Application denied message:<br /><i>{GROUPNAME} will be replaced with your group's name.</i></td>
+<td style='width:50%; text-align:right' class='forumheader3'>
+<table style='width:100%;'>
+<tr>
+<td style='width:20%; text-align:right;'>Subject:</td>
+<td><input type='text' name='avalanche_denysubject' style='width:91%;' class='tbox' value='".$pref['avalanche_denysubject']."' /></td>
+</tr>
+<tr>
+<td style='width:20%; text-align:right;'>Body:</td>
+<td><textarea class='tbox' name='avalanche_denymessage' style='width:90%; height:80px;'>".$pref['avalanche_denymessage']."</textarea></td>
+</tr>
+</table>
 </td>
 </tr>
 <tr>

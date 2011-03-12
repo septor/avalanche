@@ -42,11 +42,14 @@ $eplug_prefs = array(
 	"avalanche_viewaccess" => "",
 	"avalanche_rankaccess" => "",
 	"avalanche_manageaccess" => "",
-	"avalanche_replymethod" => "pm",
 	"avalanche_requiredfieldtext" => "<span style='color: #cc0000;'>*</span> ",
 	"avalanche_applyamount" => "1",
 	"avalanche_votecolors" => "#00bf00,#bf0000",
-	"avalanche_votecommentediting" => "0"
+	"avalanche_votecommentediting" => "0",
+	"avalanche_acceptsubject" => "Request accepted!",
+	"avalanche_acceptmessage" => "We're pleased to inform you that your request to join {GROUPNAME} has been accepted!",
+	"avalanche_denysubject" => "Request denied.",
+	"avalanche_denymessage" => "We're sorry to inform you that your request to join {GROUPNAME} has been denied!"
 );
 
 //MYSQL TABLES TO BE CREATED---------------------------------------------------------------------------------+
@@ -73,6 +76,7 @@ $eplug_tables = array(
 		av_aid int(10) unsigned NOT NULL,
 		av_value text NOT NULL,
 		av_datestamp int(10) unsigned NOT NULL,
+		av_status int(10) unsigned NOT NULL,
 		PRIMARY KEY  (av_id)
 	) TYPE=MyISAM AUTO_INCREMENT=1;",
 
