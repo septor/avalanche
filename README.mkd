@@ -39,7 +39,7 @@ and won't be needed to run the plugin. Avalance will work just fine without any 
 
 # Upcoming Features
 
-* Application Management (approval and denial of app)
+* Discussion Page (for applicants to discuss their app with admins)
 * Module Support
 * WoW Module
 
