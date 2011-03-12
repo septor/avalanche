@@ -19,14 +19,26 @@ if(check_class($pref['avalanche_viewaccess'])){
 	$sql3 = new db();
 
 	if(isset($_POST['submitvote'])){
-		if($_POST['vote'] != "" && $_POST['comment'] != ""){
-			if(hasVoted(USERID, $_POST['aid']) == false){
-				$sql->db_Insert("avalanche_comment", "'', '".intval(USERID)."', '".intval($_POST['aid'])."', '".$tp->toDB($_POST['comment'])."', '".intval($_POST['vote'])."', '".intval(time())."'");
+		if($pref['avalance_forcevotecomment'] == 1){
+			if($_POST['vote'] != "" && $_POST['comment'] != ""){
+				if(hasVoted(USERID, $_POST['aid']) == false){
+					$sql->db_Insert("avalanche_comment", "'', '".intval(USERID)."', '".intval($_POST['aid'])."', '".$tp->toDB($_POST['comment'])."', '".intval($_POST['vote'])."', '".intval(time())."'");
+				}else{
+					$message = "You have already voted on this application.";
+				}
 			}else{
-				$message = "You have already voted on this application.";
+				$message = "You need to add a comment and place a vote first!";
 			}
 		}else{
-			$message = "You must place your vote and submit a comment regarding your decision.";
+			if($_POST['vote'] != ""){
+				if(hasVoted(USERID, $_POST['aid']) == false){
+					$sql->db_Insert("avalanche_comment", "'', '".intval(USERID)."', '".intval($_POST['aid'])."', '".$tp->toDB($_POST['comment'])."', '".intval($_POST['vote'])."', '".intval(time())."'");
+				}else{
+					$message = "You have already voted on this application.";
+				}
+			}else{
+				$message = "You need to place a vote first!";
+			}
 		}
 	}
 
@@ -99,25 +111,27 @@ if(check_class($pref['avalanche_viewaccess'])){
 	if($action == "id"){
 
 		if($subaction == "edit"){
-
-			$sql3->db_Select("avalanche_comment", "*", "av_id='".intval($subid)."'");
-			while($row3 = $sql3->db_Fetch()){
-				$comment = $row3['av_comment'];
+			
+			if($pref['avalanche_votecommentediting'] == 1){
+				$sql3->db_Select("avalanche_comment", "*", "av_id='".intval($subid)."'");
+				while($row3 = $sql3->db_Fetch()){
+					$comment = $row3['av_comment'];
+				}
+				$satext = "<form method='post' action='".e_SELF."?id.".$id."'>
+				<table style='width:50%' class='fborder'>
+				<tr>
+				<td style='text-align:center;'><textarea class='tbox' name='editcomment' style='width:80%; height:50px;'>".$comment."</textarea></td>
+				</tr>
+				<tr>
+				<td style='text-align:center;'>
+				<input type='hidden' name='cid' value='".$subid."' />
+				<input type='submit' class='button' name='updatecomment' value='Update Comment'>
+				</td>
+				</tr>
+				</table>
+				</form>";
+				$ns->tablerender("Modify your comment below:", "<div style='text-align:center'><b>".$satext."</b></div>");
 			}
-			$satext = "<form method='post' action='".e_SELF."?id.".$id."'>
-			<table style='width:50%' class='fborder'>
-			<tr>
-			<td style='text-align:center;'><textarea class='tbox' name='editcomment' style='width:80%; height:50px;'>".$comment."</textarea></td>
-			</tr>
-			<tr>
-			<td style='text-align:center;'>
-			<input type='hidden' name='cid' value='".$subid."' />
-			<input type='submit' class='button' name='updatecomment' value='Update Comment'>
-			</td>
-			</tr>
-			</table>
-			</form>";
-			$ns->tablerender("Modify your comment below:", "<div style='text-align:center'><b>".$satext."</b></div>");
 
 		}else if($subaction == "delete"){
 			$satext = "<form method='post' action='".e_SELF."'>
@@ -249,13 +263,21 @@ if(check_class($pref['avalanche_viewaccess'])){
 				}else{
 					$editblock = "";
 				}
-				$text .= "
-				<tr>
-				<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? "<img src='".$noimage."' />" : "<img src='".$yesimage."' />")."</td>
-				<td style='width:15%;' class='forumheader3'>
-				<a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$cmtusr["user_name"]."</a><br />Total Votes: ".getUservotes($row2['av_uid'])."</td>
-				<td style='width:80%; vertical-align:top;' class='forumheader3'>".$tp->toHTML($row2['av_comment']).$editblock."</td>
-				</tr>";
+				if($row2['av_comment'] != ""){
+					$text .= "
+					<tr>
+					<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? "<img src='".$noimage."' />" : "<img src='".$yesimage."' />")."</td>
+					<td style='width:15%;' class='forumheader3'>
+					<a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$cmtusr["user_name"]."</a><br />Total Votes: ".getUservotes($row2['av_uid'])."</td>
+					<td style='width:80%; vertical-align:top;' class='forumheader3'>".$tp->toHTML($row2['av_comment']).$editblock."</td>
+					</tr>";
+				}else{
+					$text .= "
+					<tr>
+					<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? "<img src='".$noimage."' />" : "<img src='".$yesimage."' />")."</td>
+					<td colspan='2' style='width:95%;' class='forumheader3'>
+					<i><a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$cmtusr["user_name"]."</a> voted ".($row2['av_vote'] == 0 ? "<span style=color:".$votecolor[1].";'><b>no</b></span>" : "<span style=color:".$votecolor[0].";'><b>yes</b></span>").", but decided not to leave a comment.</i>";
+				}
 			}
 			$text .= "</table>";
 

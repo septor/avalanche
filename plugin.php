@@ -46,6 +46,7 @@ $eplug_prefs = array(
 	"avalanche_applyamount" => "1",
 	"avalanche_votecolors" => "#00bf00,#bf0000",
 	"avalanche_votecommentediting" => "0",
+	"avalanche_forcevotecomment" => "1",
 	"avalanche_acceptsubject" => "Request accepted!",
 	"avalanche_acceptmessage" => "We're pleased to inform you that your request to join {GROUPNAME} has been accepted!",
 	"avalanche_denysubject" => "Request denied.",
