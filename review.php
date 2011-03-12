@@ -2,8 +2,9 @@
 
 require_once("../../class2.php");
 require_once(e_PLUGIN."avalanche/class.php");
+require_once(e_HANDLER."date_handler.php");
+require_once(e_HANDLER."mail.php");
 require_once(HEADERF);
-include_once(e_HANDLER."date_handler.php");
 
 if(check_class($pref['avalanche_viewaccess'])){
 	if(e_QUERY){
@@ -43,11 +44,41 @@ if(check_class($pref['avalanche_viewaccess'])){
 		$message = "Application #".$_POST['aid']." deleted!";
 	}
 
+	if(isset($_POST['acceptapp'])){
+
+		$subject = "Request accepted!";
+		$msg = "We're pleased to inform you that your request to join ".$pref['avalanche_groupname']." has been accepted!";
+
+		$uem = get_user_data($_POST['uid']);
+		if($pref['avalanche_replymethod'] == "pm"){
+			sendpm(USERID, $_POST['uid'], $subject, $msg);
+
+		}else if($pref['avalanche_replymethod'] == "email"){
+			sendemail($uem['user_email'], $subject, $msg);
+		}
+		$message = "Application #".$_POST['aid']." has been accepted!";
+	}
+
+	if(isset($_POST['denyapp'])){
+
+		$subject = "Request denied.";
+		$msg = "We're sorry to inform you that your request to join ".$pref['avalanche_groupname']." has been denied.";
+
+		$uem = get_user_data($_POST['uid']);
+		if($pref['avalanche_replymethod'] == "pm"){
+			sendpm(USERID, $_POST['uid'], $subject, $msg);
+
+		}else if($pref['avalanche_replymethod'] == "email"){
+			sendemail($uem['user_email'], $subject, $msg);
+		}
+		$message = "Application #".$_POST['aid']." has been denied!";
+	}
+
 	$newimage = (file_exists(THEME."images/avalanche/new.png") ? THEME."images/avalanche/new.png" : e_PLUGIN."avalanche/images/new.png");
 	$viewimage = (file_exists(THEME."images/avalanche/view.png") ? THEME."images/avalanche/view.png" : e_PLUGIN."avalanche/images/view.png");
 	$deleteimage = (file_exists(THEME."images/avalanche/delete.png") ? THEME."images/avalanche/delete.png" : e_PLUGIN."avalanche/images/delete.png");
-	//$acceptimage = (file_exists(THEME."images/avalanche/accept.png") ? THEME."images/avalanche/accept.png" : e_PLUGIN."avalanche/images/accept.png");
-	//$denyimage = (file_exists(THEME."images/avalanche/deny.png") ? THEME."images/avalanche/deny.png" : e_PLUGIN."avalanche/images/deny.png");
+	$acceptimage = (file_exists(THEME."images/avalanche/accept.png") ? THEME."images/avalanche/accept.png" : e_PLUGIN."avalanche/images/accept.png");
+	$denyimage = (file_exists(THEME."images/avalanche/deny.png") ? THEME."images/avalanche/deny.png" : e_PLUGIN."avalanche/images/deny.png");
 	$yesimage = (file_exists(THEME."images/avalanche/yes.png") ? THEME."images/avalanche/yes.png" : e_PLUGIN."avalanche/images/yes.png");
 	$noimage = (file_exists(THEME."images/avalanche/no.png") ? THEME."images/avalanche/no.png" : e_PLUGIN."avalanche/images/no.png");
 	$editimage = (file_exists(THEME."images/avalanche/edit.png") ? THEME."images/avalanche/edit.png" : e_PLUGIN."avalanche/images/edit.png");
@@ -77,14 +108,33 @@ if(check_class($pref['avalanche_viewaccess'])){
 			</tr>
 			</table>
 			</form>";
+			$ns->tablerender("Modify your comment below:", "<div style='text-align:center'><b>".$satext."</b></div>");
 
-			$ns->tablerender("Modify Comment", "<div style='text-align:center'><b>".$satext."</b></div>");
-		}else if($subaction = "delete"){
+		}else if($subaction == "delete"){
 			$satext = "<form method='post' action='".e_SELF."'>
 			<input type='submit' class='button' name='deleteapp' value='Yes!' /> <input type='button' class='button' value='No!' />
 			<input type='hidden' name='aid' value='".$id."' />
 			</form>";
 			$ns->tablerender("Delete the below application?", "<div style='text-align:center'><b>".$satext."</b></div>");
+
+		}else if($subaction == "accept"){
+			
+			$satext = "<form method='post' action='".e_SELF."'>
+			<input type='submit' class='button' name='acceptapp' value='Yes!' /> <input type='button' class='button' value='No!' />
+			<input type='hidden' name='aid' value='".$id."' />
+			<input type='hidden' name='uid' value='".getUserid($id)."' />
+			</form>";
+			$ns->tablerender("Do you wish to accept the below application?", "<div style='text-align:center'><b>".$satext."</b></div>");
+
+		}else if($subaction == "deny"){
+			
+			$satext = "<form method='post' action='".e_SELF."'>
+			<input type='submit' class='button' name='denyapp' value='Yes!' /> <input type='button' class='button' value='No!' />
+			<input type='hidden' name='aid' value='".$id."' />
+			<input type='hidden' name='uid' value='".getUserid($id)."' />
+			</form>";
+			$ns->tablerender("Do you wish to deny the below application?", "<div style='text-align:center'><b>".$satext."</b></div>");
+
 		}
 
 
@@ -212,7 +262,9 @@ if(check_class($pref['avalanche_viewaccess'])){
 				<td style='text-align:center;' class='forumheader3'>".getVotes($row2['av_aid'])."</td>
 				<td style='text-align:center;' class='forumheader3'><a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i]."'><img src='".$viewimage."' title='View this application!' /></a>";
 				if(check_class($pref['avalanche_manageaccess'])){
-					$text .= " <a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i].".delete'><img src='".$deleteimage."' title='Delete this application!' /></a>";
+					$text .= " <a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i].".delete'><img src='".$deleteimage."' title='Delete this application!' /></a><br />
+					<a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i].".accept'><img src='".$acceptimage."' title='Accept this application!' /></a>
+					<a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i].".deny'><img src='".$denyimage."' title='Deny this application!' /></a>";
 				}
 				$text .= "</td>
 				</tr>";

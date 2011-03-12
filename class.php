@@ -54,4 +54,9 @@ function getUserVotes($uid){
 	return $uv->db_Count("avalanche_comment", "(*)", "WHERE av_uid='".intval($uid)."'");
 }
 
+function sendpm($to, $from, $subject, $message){
+	$spm = new db();
+	return $spm->db_Insert("private_msg", "0, '".intval($to)."', '".intval($from)."', '".intval(time())."', '0', '".$tp->toDB($subject)."', '".$tp->toDB($message)."', '1', '0', '', '', '".intval(strlen($message))."'");
+}
+
 ?>
