@@ -44,7 +44,7 @@ if($action == "del"){
 
 if($action == "edit"){
 	$topcap = "Edit Question";
-	$sql2->db_Select("avalanche_application", "*", "av_id='".$id."'");
+	$sql2->db_Select("avalanche_application", "*", "av_id='".intval($id)."'");
 	while($row2 = $sql2->db_Fetch()){
 		$newkey = $row2['av_key'];
 		$newfieldname = $row2['av_fieldname'];
@@ -93,60 +93,60 @@ if($action == "edit"){
 	</form>";
 }
 
-if (isset($message)) {
+if(isset($message)){
 	$ns->tablerender("", "<div style='text-align:center'><b>".$message."</b></div>");
 }
 
-if (isset($toptext)) {
+if(isset($toptext)){
 	$ns->tablerender($topcap, "<div style='text-align:center'>".$toptext."</div>");
 }
 
 $text = "<div style='text-align:center'>
 <form method='post' action='".e_SELF."'>
 <table style='width:90%' class='fborder'>
-	<tr>
-		<td style='width:10%; text-align:center;' class='fcaption'>Question</td>
-		<td style='width:15%; text-align:center;' class='fcaption'>Field Name</td>
-		<td style='width:40%; text-align:center;' class='fcaption'>Field Type</td>
-		<td style='width:20%; text-align:center;' class='fcaption'>Field Values</td>
-		<td style='width:15%; text-align:center;' class='fcaption'>Required</td>
-	</tr>
-	<tr>
-		<td class='forumheader3'>
-			<input type='text' name='key' class='tbox' />
-		</td>
-		<td class='forumheader3'>
-			<input type='text' name='fieldname' class='tbox' />
-		</td>
-		<td class='forumheader3'>
-			<select name='type' class='tbox'>
-			<option value='textbox'>Text Box</option>
-			<option value='textarea'>Text Area</option>
-			<option value='radio'>Radio Button</option>
-			<option value='checkbox'>Checkbox</option>
-			<option value='dropdown'>Drop Down</option>
-			</select>
-		</td>
-		<td class='forumheader3'>
-			<input type='text' name='value' class='tbox' />
-		</td>
-		<td class='forumheader3'>
-			<input type='checkbox' name='required' value='1' />
-		</td>
-	</tr>
-	<tr>
-		<td class='forumheader2'><i>The question you wish to ask the applicant.</i></td>
-		<td class='forumheader2'><i>A name for the field being created. Usually a short word, lower case, without spaces.</i></td>
-		<td class='forumheader2'><i>The type of field to use. Simple questions should use text boxes, long answers should use textareas, multipe choice questions should use radio boxes or drop downs, and multiple-select choices should use checkboxes.</i></td>
-		<td class='forumheader2'><i>The value(s) inside the field types. If you select radio button, checkbox, or drop down; split your choices with two forward slashes (//).</i></td>
-		<td class='forumheader2'><i>Denotes whether or not the field is required.</i></td>
-	</tr>
-	<tr>
-		<td colspan='5' style='text-align:center' class='forumheader'>
-			<input class='button' type='submit' name='create' value='Create Field' />
-			<input type='reset' class='button' value='Reset' />
-		</td>
-	</tr>
+<tr>
+<td style='width:10%; text-align:center;' class='fcaption'>Question</td>
+<td style='width:15%; text-align:center;' class='fcaption'>Field Name</td>
+<td style='width:40%; text-align:center;' class='fcaption'>Field Type</td>
+<td style='width:20%; text-align:center;' class='fcaption'>Field Values</td>
+<td style='width:15%; text-align:center;' class='fcaption'>Required</td>
+</tr>
+<tr>
+<td class='forumheader3'>
+<input type='text' name='key' class='tbox' />
+</td>
+<td class='forumheader3'>
+<input type='text' name='fieldname' class='tbox' />
+</td>
+<td class='forumheader3'>
+<select name='type' class='tbox'>
+<option value='textbox'>Text Box</option>
+<option value='textarea'>Text Area</option>
+<option value='radio'>Radio Button</option>
+<option value='checkbox'>Checkbox</option>
+<option value='dropdown'>Drop Down</option>
+</select>
+</td>
+<td class='forumheader3'>
+<input type='text' name='value' class='tbox' />
+</td>
+<td class='forumheader3'>
+<input type='checkbox' name='required' value='1' />
+</td>
+</tr>
+<tr>
+<td class='forumheader2'><i>The question you wish to ask the applicant.</i></td>
+<td class='forumheader2'><i>A name for the field being created. Usually a short word, lower case, without spaces.</i></td>
+<td class='forumheader2'><i>The type of field to use. Simple questions should use text boxes, long answers should use textareas, multipe choice questions should use radio boxes or drop downs, and multiple-select choices should use checkboxes.</i></td>
+<td class='forumheader2'><i>The value(s) inside the field types. If you select radio button, checkbox, or drop down; split your choices with two forward slashes (//).</i></td>
+<td class='forumheader2'><i>Denotes whether or not the field is required.</i></td>
+</tr>
+<tr>
+<td colspan='5' style='text-align:center' class='forumheader'>
+<input class='button' type='submit' name='create' value='Create Field' />
+<input type='reset' class='button' value='Reset' />
+</td>
+</tr>
 </table>
 </form>
 </div>";
@@ -159,28 +159,26 @@ if($sql->db_Count("avalanche_application", "(*)") == 0){
 	$text2 .= "No fields have been created at this time.";
 }else{
 	$sql->db_Select("avalanche_application", "*", "ORDER BY av_id ASC", "no-where");
-	$text2 .= "
-	<table style='width:90%' class='fborder'>
+	$text2 .= "<table style='width:90%' class='fborder'>
 	<tr>
-		<td style='width:4%; text-align:center;' class='fcaption'>ID</td>
-		<td style='width:20%; text-align:center;' class='fcaption'>Question</td>
-		<td style='width:15%; text-align:center;' class='fcaption'>Field Name</td>
-		<td style='width:10%; text-align:center;' class='fcaption'>Field Type</td>
-		<td style='width:36%; text-align:center;' class='fcaption'>Field Values</td>
-		<td style='width:10%; text-align:center;' class='fcaption'>Required</td>
-		<td style='width:5%; text-align:center;' class='fcaption'>&nbsp;</td>
+	<td style='width:4%; text-align:center;' class='fcaption'>ID</td>
+	<td style='width:20%; text-align:center;' class='fcaption'>Question</td>
+	<td style='width:15%; text-align:center;' class='fcaption'>Field Name</td>
+	<td style='width:10%; text-align:center;' class='fcaption'>Field Type</td>
+	<td style='width:36%; text-align:center;' class='fcaption'>Field Values</td>
+	<td style='width:10%; text-align:center;' class='fcaption'>Required</td>
+	<td style='width:5%; text-align:center;' class='fcaption'>&nbsp;</td>
 	</tr>";
 
 	while($row = $sql->db_Fetch()){
-		$text2 .= "
-		<tr>
-			<td style='text-align:center;' class='forumheader3'>".$row['av_id']."</td>
-			<td class='forumheader3'>".$row['av_key']."</td>
-			<td class='forumheader3'>".$row['av_fieldname']."</td>
-			<td class='forumheader3'>".$row['av_type']."</td>
-			<td class='forumheader3'>".$row['av_value']."</td>
-			<td style='text-align:center;' class='forumheader3'>".($row['av_required'] == true ? "Yes" : "No")."</td>
-			<td class='forumheader3' style='text-align:center;'><a href='".e_PLUGIN."avalanche/admin_app.php?edit.".$row['av_id']."'>".ADMIN_EDIT_ICON."</a> <a href='".e_PLUGIN."avalanche/admin_app.php?del.".$row['av_id']."'>".ADMIN_DELETE_ICON."</a></td>
+		$text2 .= "<tr>
+		<td style='text-align:center;' class='forumheader3'>".$row['av_id']."</td>
+		<td class='forumheader3'>".$row['av_key']."</td>
+		<td class='forumheader3'>".$row['av_fieldname']."</td>
+		<td class='forumheader3'>".$row['av_type']."</td>
+		<td class='forumheader3'>".$row['av_value']."</td>
+		<td style='text-align:center;' class='forumheader3'>".($row['av_required'] == true ? "Yes" : "No")."</td>
+		<td class='forumheader3' style='text-align:center;'><a href='".e_PLUGIN."avalanche/admin_app.php?edit.".$row['av_id']."'>".ADMIN_EDIT_ICON."</a> <a href='".e_PLUGIN."avalanche/admin_app.php?del.".$row['av_id']."'>".ADMIN_DELETE_ICON."</a></td>
 		</tr>";
 	}
 

@@ -30,11 +30,7 @@ function getUserid($aid){
 
 function hasVoted($uid, $aid){
 	$hv = new db();
-	if($hv->db_Count("avalanche_comment", "(*)", "WHERE av_uid='".intval($uid)."' AND av_aid='".intval($aid)."'") > 0){
-		return true;
-	}else{
-		return false;
-	}
+	return ($hv->db_Count("avalanche_comment", "(*)", "WHERE av_uid='".intval($uid)."' AND av_aid='".intval($aid)."'") > 0 ? true : false);
 }
 
 function getVotes($aid, $type="all"){

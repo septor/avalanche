@@ -46,12 +46,8 @@ if(check_class($pref['avalanche_applyaccess'])){
 				}
 			}
 
-			if($pref['avalanche_rulesrequired'] == true && $pref['avalanche_rules'] != ""){
-				$tenfour_rules = ($_POST['acceptrules'] == true ? true : false);
-			}else{
-				$tenfour_rules = true;
-			}
-			
+			$tenfour_rules = ($pref['avalanche_rulesrequired'] == true && $pref['avalanche_rules'] != "" ? ($_POST['acceptrules'] == true ? true : false) : true);
+
 			if($tenfour_rules){
 				if($proceed){
 					if($captcha->verify_code($_POST['rand_num'], $_POST['code_verify'])){
@@ -137,8 +133,7 @@ if(check_class($pref['avalanche_applyaccess'])){
 
 			}
 
-			$text .= "</td>
-			</tr>";
+			$text .= "</td>\n</tr>";
 		}
 
 		$text .= "<tr>
