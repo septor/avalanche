@@ -2,6 +2,7 @@
 
 require_once("../../class2.php");
 require_once(e_PLUGIN."avalanche/class.php");
+require_once(e_PLUGIN."avalanche/defines.php");
 require_once(e_HANDLER."date_handler.php");
 require_once(e_HANDLER."mail.php");
 require_once(HEADERF);
@@ -17,6 +18,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 	}
 	$gen = new convert();
 	$sql3 = new db();
+	$votecolor = explode(",", $pref['avalanche_votecolors']);
 
 	if(isset($_POST['submitvote'])){
 		if($pref['avalance_forcevotecomment'] == 1){
@@ -83,8 +85,8 @@ if(check_class($pref['avalanche_viewaccess'])){
 			}else if($_POST['replymethod'] == "email"){
 				sendemail($uem['user_email'], $pref['avalanche_denysubject'], str_replace("{GROUPNAME}", $pref['avalanche_groupname'], $pref['avalanche_denymessage']));
 			}
-
 			$message = "Application #".$_POST['aid']." has been denied via ".$_POST['replymethod']." ";
+
 			if($_POST['andnow'] == "delete"){
 				$sql->db_Delete("avalanche_request", "av_aid='".intval($_POST['aid'])."'");
 				$sql->db_Delete("avalanche_comment", "av_aid='".intval($_POST['aid'])."'");
@@ -96,22 +98,12 @@ if(check_class($pref['avalanche_viewaccess'])){
 		}
 	}
 
-	$newimage = (file_exists(THEME."images/avalanche/new.png") ? THEME."images/avalanche/new.png" : e_PLUGIN."avalanche/images/new.png");
-	$deleteimage = (file_exists(THEME."images/avalanche/delete.png") ? THEME."images/avalanche/delete.png" : e_PLUGIN."avalanche/images/delete.png");
-	$acceptimage = (file_exists(THEME."images/avalanche/accept.png") ? THEME."images/avalanche/accept.png" : e_PLUGIN."avalanche/images/accept.png");
-	$denyimage = (file_exists(THEME."images/avalanche/deny.png") ? THEME."images/avalanche/deny.png" : e_PLUGIN."avalanche/images/deny.png");
-	$yesimage = (file_exists(THEME."images/avalanche/yes.png") ? THEME."images/avalanche/yes.png" : e_PLUGIN."avalanche/images/yes.png");
-	$noimage = (file_exists(THEME."images/avalanche/no.png") ? THEME."images/avalanche/no.png" : e_PLUGIN."avalanche/images/no.png");
-	$editimage = (file_exists(THEME."images/avalanche/edit.png") ? THEME."images/avalanche/edit.png" : e_PLUGIN."avalanche/images/edit.png");
-
 	if (isset($message)) {
 		$ns->tablerender("", "<div style='text-align:center'><b>".$message."</b></div>");
 	}
 
 	if($action == "id"){
-
 		if($subaction == "edit"){
-			
 			if($pref['avalanche_votecommentediting'] == 1){
 				$sql3->db_Select("avalanche_comment", "*", "av_id='".intval($subid)."'");
 				while($row3 = $sql3->db_Fetch()){
@@ -190,19 +182,17 @@ if(check_class($pref['avalanche_viewaccess'])){
 
 		}
 
-
 		$user = get_user_data(getUserid($id));
-		$votecolor = explode(",", $pref['avalanche_votecolors']);
 
 		$text = "";
 		if(check_class($pref['avalanche_manageaccess'])){
 				$text .= "<table style='width:90%' class='fborder'>
 				<tr>
 				<td class='forumheader3'>
-				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".accept'><img src='".$acceptimage."' title='Accept this application!' /></a>
-				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".deny'><img src='".$denyimage."' title='Deny this application!' /></a>
+				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".accept'>".ACCEPTIMG."</a>
+				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".deny'>".DENYIMG."</a>
 				<div style='float:right;'>
-				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".delete'><img src='".$deleteimage."' title='Delete this application!' /></a>
+				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".delete'>".DELETEIMG."</a>
 				</div>
 				</td>
 				</tr>
@@ -259,14 +249,14 @@ if(check_class($pref['avalanche_viewaccess'])){
 			while($row2 = $sql2->db_Fetch()){
 				$cmtusr = get_user_data($row2['av_uid']);
 				if($pref['avalanche_votecommentediting'] == 1 && USERID == $row2['av_uid']){
-					$editblock = "<div style='float:right;'><a href='".e_SELF."?id.".$id.".edit.".$row2['av_id']."'><img src='".$editimage."' /></a></div>";
+					$editblock = "<div style='float:right;'><a href='".e_SELF."?id.".$id.".edit.".$row2['av_id']."'>".EDITIMG."</a></div>";
 				}else{
 					$editblock = "";
 				}
 				if($row2['av_comment'] != ""){
 					$text .= "
 					<tr>
-					<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? "<img src='".$noimage."' />" : "<img src='".$yesimage."' />")."</td>
+					<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? NOIMG : YESIMG)."</td>
 					<td style='width:15%;' class='forumheader3'>
 					<a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$cmtusr["user_name"]."</a><br />Total Votes: ".getUservotes($row2['av_uid'])."</td>
 					<td style='width:80%; vertical-align:top;' class='forumheader3'>".$tp->toHTML($row2['av_comment']).$editblock."</td>
@@ -274,7 +264,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 				}else{
 					$text .= "
 					<tr>
-					<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? "<img src='".$noimage."' />" : "<img src='".$yesimage."' />")."</td>
+					<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? NOIMG : YESIMG)."</td>
 					<td colspan='2' style='width:95%;' class='forumheader3'>
 					<i><a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$cmtusr["user_name"]."</a> voted ".($row2['av_vote'] == 0 ? "<span style=color:".$votecolor[1].";'><b>no</b></span>" : "<span style=color:".$votecolor[0].";'><b>yes</b></span>").", but decided not to leave a comment.</i>";
 				}
@@ -286,10 +276,10 @@ if(check_class($pref['avalanche_viewaccess'])){
 				<table style='width:90%' class='fborder'>
 				<tr>
 				<td class='forumheader3'>
-				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".accept'><img src='".$acceptimage."' title='Accept this application!' /></a>
-				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".deny'><img src='".$denyimage."' title='Deny this application!' /></a>
+				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".accept'>".ACCEPTIMG."</a>
+				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".deny'>".DENYIMG."</a>
 				<div style='float:right;'>
-				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".delete'><img src='".$deleteimage."' title='Delete this application!' /></a>
+				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".delete'>".DELETEIMG."</a>
 				</div>
 				</td>
 				</tr>
@@ -323,7 +313,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 		<div style='text-align:center;'><a href='".e_PLUGIN."avalanche/review.php'>Return to the Application Listing</a></div>";
 	}else{
 
-		$aids = array(); // not the same kind of aids, you jackass
+		$aids = array();
 		$sql->db_Select("avalanche_request", "*");
 		while($row = $sql->db_Fetch()){
 			if(!in_array($row['av_aid'], $aids)){
@@ -350,18 +340,18 @@ if(check_class($pref['avalanche_viewaccess'])){
 			while($row2 = $sql2->db_Fetch()){
 				$user = get_user_data($row2['av_uid']);
 				$text .= "<tr>
-				<td style='text-align:center;' class='forumheader3'>".(hasVoted(USERID, $row2['av_aid']) == false ? "<img src='".$newimage."' title='You have not voted on this application!' /> " : "").$aids[$i]."</td>
+				<td style='text-align:center;' class='forumheader3'>".(hasVoted(USERID, $row2['av_aid']) == false ? NEWIMG." " : "").$aids[$i]."</td>
 				<td style='text-align:center;' class='forumheader3'><a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$user["user_name"]."</a></td>
 				<td style='text-align:center;' class='forumheader3'>".$gen->convert_date($row2['av_datestamp'])."</td>
 				<td style='text-align:center;' class='forumheader3'>".getVotes($row2['av_aid'])."</td>
 				<td style='text-align:center;' class='forumheader3'><a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i]."'>view</a></td>";
 				if(check_class($pref['avalanche_manageaccess'])){
 					$text .= "<td style='text-align:center;' class='forumheader3'>
-					<a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i].".accept'><img src='".$acceptimage."' title='Accept this application!' /></a>
-					<a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i].".deny'><img src='".$denyimage."' title='Deny this application!' /></a>
+					<a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i].".accept'>".ACCEPTIMG."</a>
+					<a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i].".deny'>".DENYIMG."</a>
 					</td>
 					<td style='width:5%; text-align:center;' class='forumheader3'>
-					<a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i].".delete'><img src='".$deleteimage."' title='Delete this application!' /></a>
+					<a href='".e_PLUGIN."avalanche/review.php?id.".$aids[$i].".delete'>".DELETEIMG."</a>
 					</td>";
 				}
 				$text .= "</tr>";

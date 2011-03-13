@@ -2,6 +2,7 @@
 
 require_once("../../class2.php");
 require_once(e_PLUGIN."avalanche/class.php");
+require_once(e_PLUGIN."avalanche/defines.php");
 require_once(e_HANDLER."date_handler.php");
 require_once(HEADERF);
 
@@ -16,6 +17,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 	}
 	$gen = new convert();
 	$sql3 = new db();
+	$votecolor = explode(",", $pref['avalanche_votecolors']);
 
 	if(isset($_POST['deleteapp'])){
 		$sql->db_Delete("avalanche_request", "av_aid='".intval($_POST['aid'])."'");
@@ -23,15 +25,12 @@ if(check_class($pref['avalanche_viewaccess'])){
 		$message = "Application #".$_POST['aid']." deleted!";
 	}
 
-	$deleteimage = (file_exists(THEME."images/avalanche/delete.png") ? THEME."images/avalanche/delete.png" : e_PLUGIN."avalanche/images/delete.png");
-	$yesimage = (file_exists(THEME."images/avalanche/yes.png") ? THEME."images/avalanche/yes.png" : e_PLUGIN."avalanche/images/yes.png");
-	$noimage = (file_exists(THEME."images/avalanche/no.png") ? THEME."images/avalanche/no.png" : e_PLUGIN."avalanche/images/no.png");
-
 	if (isset($message)) {
 		$ns->tablerender("", "<div style='text-align:center'><b>".$message."</b></div>");
 	}
 
 	if($action == "id"){
+		$user = get_user_data(getUserid($id));
 
 		if($subaction == "delete"){
 			$satext = "<form method='post' action='".e_SELF."'>
@@ -41,16 +40,12 @@ if(check_class($pref['avalanche_viewaccess'])){
 			$ns->tablerender("Are you sure you wish to delete the below application?", "<div style='text-align:center'><b>".$satext."</b></div>");
 		}
 
-
-		$user = get_user_data(getUserid($id));
-		$votecolor = explode(",", $pref['avalanche_votecolors']);
-
 		$text = "";
 		if(check_class($pref['avalanche_manageaccess'])){
 				$text .= "<table style='width:90%' class='fborder'>
 				<tr>
 				<td style='text-align:right;' class='forumheader3'>
-				<a href='".e_PLUGIN."avalanche/archive.php?id.".$id.".delete'><img src='".$deleteimage."' title='Delete this application!' /></a>
+				<a href='".e_PLUGIN."avalanche/archive.php?id.".$id.".delete'>".DELETEIMG."</a>
 				</td>
 				</tr>
 				</table>
@@ -104,7 +99,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 			if($row2['av_comment'] != ""){
 				$text .= "
 				<tr>
-				<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? "<img src='".$noimage."' />" : "<img src='".$yesimage."' />")."</td>
+				<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? NOIMG : YESIMG)."</td>
 				<td style='width:15%;' class='forumheader3'>
 				<a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$cmtusr["user_name"]."</a><br />Total Votes: ".getUservotes($row2['av_uid'])."</td>
 				<td style='width:80%; vertical-align:top;' class='forumheader3'>".$tp->toHTML($row2['av_comment'])."</td>
@@ -112,7 +107,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 			}else{
 				$text .= "
 				<tr>
-				<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? "<img src='".$noimage."' />" : "<img src='".$yesimage."' />")."</td>
+				<td style='width:5%; text-align:center;' class='forumheader3'>".($row2['av_vote'] == 0 ? NOIMG : YESIMG)."</td>
 				<td colspan='2' style='width:95%;' class='forumheader3'>
 				<i><a href='".e_BASE."user.php?id.".$row2['av_uid']."'>".$cmtusr["user_name"]."</a> voted ".($row2['av_vote'] == 0 ? "<span style=color:".$votecolor[1].";'><b>no</b></span>" : "<span style=color:".$votecolor[0].";'><b>yes</b></span>").", but decided not to leave a comment.</i>";
 			}
@@ -123,7 +118,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 
 	}else{
 
-		$aids = array(); // not the same kind of aids, you jackass
+		$aids = array();
 		$sql->db_Select("avalanche_request", "*");
 		while($row = $sql->db_Fetch()){
 			if(!in_array($row['av_aid'], $aids)){
@@ -132,7 +127,6 @@ if(check_class($pref['avalanche_viewaccess'])){
 		}
 
 		$datesubwidth = (check_class($pref['avalanche_manageaccess']) ? "30" : "40");
-		$votecolor = explode(",", $pref['avalanche_votecolors']);
 
 		$text = "
 		<table style='width:95%' class='fborder'>
@@ -163,7 +157,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 				if(check_class($pref['avalanche_manageaccess'])){
 					$pretext .= "
 					<td style='width:5%; text-align:center;' class='forumheader3'>
-					<a href='".e_PLUGIN."avalanche/archive.php?id.".$aids[$i].".delete'><img src='".$deleteimage."' title='Delete this application!' /></a>
+					<a href='".e_PLUGIN."avalanche/archive.php?id.".$aids[$i].".delete'>".DELETEIMG."</a>
 					</td>";
 				}
 				$pretext .= "</tr>";
@@ -183,21 +177,14 @@ if(check_class($pref['avalanche_viewaccess'])){
 				if(check_class($pref['avalanche_manageaccess'])){
 					$pretext .= "
 					<td style='width:5%; text-align:center;' class='forumheader3'>
-					<a href='".e_PLUGIN."avalanche/archive.php?id.".$aids[$i].".delete'><img src='".$deleteimage."' title='Delete this application!' /></a>
+					<a href='".e_PLUGIN."avalanche/archive.php?id.".$aids[$i].".delete'>".DELETEIMG."</a>
 					</td>";
 				}
 				$pretext .= "</tr>";
 			}
 		}
 
-		if($pretext){
-			$text .= $pretext;
-		}else{
-			$text .= "<tr>
-			<td colspan='6' style='text-align:center;' class='forumheader3'>No applications founds.</td>
-			</tr>";
-		}
-
+		$text .= ($pretext != "" ? $pretext : "<tr>\n<td colspan='6' style='text-align:center;' class='forumheader3'>No applications founds.</td>\n</tr>");
 		$text .= "</table>";
 	}
 	$ns->tablerender("Application Listing", $text);
