@@ -21,25 +21,19 @@ if(check_class($pref['avalanche_viewaccess'])){
 	$votecolor = explode(",", $pref['avalanche_votecolors']);
 
 	if(isset($_POST['submitvote'])){
-		if($pref['avalance_forcevotecomment'] == 1){
-			if($_POST['vote'] != "" && $_POST['comment'] != ""){
-				if(hasVoted(USERID, $_POST['aid']) == false){
+		if(hasVoted(USERID, $_POST['aid']) == false){
+			if($pref['avalanche_forcevotecomment'] == 1){
+				if($_POST['vote'] != "" && $_POST['comment'] != ""){
 					$sql->db_Insert("avalanche_comment", "'', '".intval(USERID)."', '".intval($_POST['aid'])."', '".$tp->toDB($_POST['comment'])."', '".intval($_POST['vote'])."', '".intval(time())."'");
 				}else{
-					$message = "You have already voted on this application.";
+					$message = "You need to select an option and add a comment in order for your vote to count!";
 				}
 			}else{
-				$message = "You need to add a comment and place a vote first!";
-			}
-		}else{
-			if($_POST['vote'] != ""){
-				if(hasVoted(USERID, $_POST['aid']) == false){
+				if($_POST['vote'] != ""){
 					$sql->db_Insert("avalanche_comment", "'', '".intval(USERID)."', '".intval($_POST['aid'])."', '".$tp->toDB($_POST['comment'])."', '".intval($_POST['vote'])."', '".intval(time())."'");
 				}else{
-					$message = "You have already voted on this application.";
+					$message = "You need to select an option in order for your vote to count!";
 				}
-			}else{
-				$message = "You need to place a vote first!";
 			}
 		}
 	}
@@ -328,10 +322,11 @@ if(check_class($pref['avalanche_viewaccess'])){
 		<td style='width:10%; text-align:center;' class='fcaption'>ID</td>
 		<td style='width:20%; text-align:center;' class='fcaption'>Username</td>
 		<td style='width:".$datesubwidth."%; text-align:center;' class='fcaption'>Date Submitted</td>
-		<td style='width:10%; text-align:center;' class='fcaption'>Votes</td>
-		<td style='width:10%; text-align:center;' class='fcaption'>&nbsp;</td>";
+		<td style='width:10%; text-align:center;' class='fcaption'>Votes</td>";
 		if(check_class($pref['avalanche_manageaccess'])){
-			$text .= "<td colspan='2' style='text-align:center;' class='fcaption'>Manage</td>";
+			$text .= "<td colspan='3' style='text-align:center;' class='fcaption'>Manage</td>";
+		}else{
+			$text .= "<td style='width:10%; text-align:center;' class='fcaption'>&nbsp;</td>";
 		}
 		$text .= "</tr>";
 		
