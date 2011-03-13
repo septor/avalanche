@@ -50,7 +50,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 				$text .= "<table style='width:90%' class='fborder'>
 				<tr>
 				<td style='text-align:right;' class='forumheader3'>
-				<a href='".e_PLUGIN."avalanche/review.php?id.".$id.".delete'><img src='".$deleteimage."' title='Delete this application!' /></a>
+				<a href='".e_PLUGIN."avalanche/archive.php?id.".$id.".delete'><img src='".$deleteimage."' title='Delete this application!' /></a>
 				</td>
 				</tr>
 				</table>
