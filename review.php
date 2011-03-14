@@ -75,9 +75,9 @@ if(check_class($pref['avalanche_viewaccess'])){
 		if(getStatus($_POST['aid']) == 0){
 			$uem = get_user_data($_POST['uid']);
 			if($_POST['replymethod'] == "pm"){
-				sendpm(USERID, $_POST['uid'], $pref['avalanche_denysubject'], str_replace("{GROUPNAME}", $pref['avalanche_groupname'], $pref['avalanche_denymessage']));
+				sendpm(USERID, $_POST['uid'], $tp->toHTML($pref['avalanche_denysubject']), str_replace("{GROUPNAME}", $pref['avalanche_groupname'], $tp->toHTML($pref['avalanche_denymessage'])));
 			}else if($_POST['replymethod'] == "email"){
-				sendemail($uem['user_email'], $pref['avalanche_denysubject'], str_replace("{GROUPNAME}", $pref['avalanche_groupname'], $pref['avalanche_denymessage']));
+				sendemail($uem['user_email'], $tp->toHTML($pref['avalanche_denysubject']), str_replace("{GROUPNAME}", $pref['avalanche_groupname'], $tp->toHTML($pref['avalanche_denymessage'])));
 			}
 			$message = "Application #".$_POST['aid']." has been denied via ".$_POST['replymethod']." ";
 
