@@ -55,9 +55,9 @@ if(check_class($pref['avalanche_viewaccess'])){
 		if(getStatus($_POST['aid']) == 0){
 			$uem = get_user_data($_POST['uid']);
 			if($_POST['replymethod'] == "pm"){
-				sendpm(USERID, $_POST['uid'], $pref['avalanche_acceptsubject'], str_replace("{GROUPNAME}", $pref['avalanche_groupname'], $pref['avalanche_acceptmessage']));
+				sendpm(USERID, $_POST['uid'], $tp->toHTML($pref['avalanche_acceptsubject']), str_replace("{GROUPNAME}", $pref['avalanche_groupname'], $tp->toHTML($pref['avalanche_acceptmessage'])));
 			}else if($_POST['replymethod'] == "email"){
-				sendemail($uem['user_email'], $pref['avalanche_acceptsubject'], str_replace("{GROUPNAME}", $pref['avalanche_groupname'], $pref['avalanche_acceptmessage']));
+				sendemail($uem['user_email'], $tp->toHTML($pref['avalanche_acceptsubject']), str_replace("{GROUPNAME}", $pref['avalanche_groupname'], $tp->toHTML($pref['avalanche_acceptmessage'])));
 			}
 			$message = "Application #".$_POST['aid']." has been accepted via ".$_POST['replymethod']." ";
 			if($_POST['andnow'] == "delete"){
