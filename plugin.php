@@ -19,7 +19,7 @@ $eplug_folder     = "avalanche";
 
 //PLUGIN MENU FILE-------------------------------------------------------------------------------------------+
 
-$eplug_menu_name  = "";
+$eplug_menu_name  = "avalanche_menu.php";
 
 //PLUGIN ADMIN AREA FILE-------------------------------------------------------------------------------------+
 
