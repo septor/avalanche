@@ -357,7 +357,7 @@ if(check_class($pref['avalanche_viewaccess'])){
 	}
 	$ns->tablerender("Application Listing", $text);
 }else{
-	$ns->tablerender("Access Denied! :D", "You do not have the correct access to view this page.");
+	$ns->tablerender("Access Denied! :D", "<div style='text-align:center;'>You do not have the correct access to view this page.</div>");
 }
 	
 require_once(FOOTERF);
