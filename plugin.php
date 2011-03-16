@@ -27,9 +27,9 @@ $eplug_conffile   = "admin_config.php";
 
 //PLUGIN ICONS AND CAPTION-----------------------------------------------------------------------------------+
 
-$eplug_logo       = "";
-$eplug_icon       = "";
-$eplug_icon_small = "";
+$eplug_logo       = e_PLUGIN."avalanche/images/avalanche.jpg";
+$eplug_icon       = $eplug_logo;
+$eplug_icon_small = $eplug_logo;
 $eplug_caption    = "Configure Avalanche";
 
 //DEFAULT PREFERENCES----------------------------------------------------------------------------------------+
