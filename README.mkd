@@ -51,3 +51,8 @@ and won't be needed to run the plugin. Avalance will work just fine without any 
 The following issues are already known, please do not report them:
 
 * No known issues at this time.
+
+# Thanks
+
+I want to extend a **huge** thanks to the e107 user MysterF for assisting me in testing the various stages of this plugin. Without him this plugin wouldn't be at the stage it
+is now and a great deal of the small features wouldn't be what they are now without his assistance.
